@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Click Test</title></head>
+<body>
+<h2>Click Test</h2>
+
+<p>Test 1: div + inline window.open (same as team banner)</p>
+<div style="padding:20px;background:#eee;cursor:pointer;margin:10px 0" 
+  onclick="window.open('reports/2025/赵汉洋.html','_blank')">
+  DIV - 赵汉洋
+</div>
+
+<p>Test 2: a + onclick function</p>
+<a style="padding:20px;background:#ddd;cursor:pointer;display:block;margin:10px 0"
+  onclick="openReport('赵汉洋')">
+  A tag - 赵汉洋
+</a>
+
+<p>Test 3: a + href</p>
+<a style="padding:20px;background:#ccc;cursor:pointer;display:block;margin:10px 0"
+  href="reports/2025/赵汉洋.html" target="_blank">
+  A href - 赵汉洋
+</a>
+
+<p>Test 4: div + onclick function</p>
+<div style="padding:20px;background:#bbb;cursor:pointer;margin:10px 0"
+  onclick="openReport('刘天益')">
+  DIV + function - 刘天益
+</div>
+
+<p>Test 5: PDF (proven working)</p>
+<div style="padding:20px;background:#aaa;cursor:pointer;margin:10px 0"
+  onclick="window.open('reports/2025/团队反馈报告.pdf','_blank')">
+  PDF - 团队报告
+</div>
+
+<script>
+function openReport(name) {
+  console.log('openReport called with:', name);
+  window.open('reports/2025/' + name + '.html', '_blank');
+}
+</script>
+</body>
+</html>

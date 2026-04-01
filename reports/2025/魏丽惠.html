@@ -1,0 +1,1328 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2025年基层管理者测评反馈报告 · 展示版</title>
+  <meta name="description" content="魏丽惠 2025 管理者测评反馈报告 展示版" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f6f3;
+      --surface: #ffffff;
+      --ink: #1c2430;
+      --muted: #6a7c8f;
+      --primary: #0f2742;
+      --accent: #c8a96b;
+      --line: #d9dee5;
+      --ok: #1e6b52;
+      --risk: #a63b3b;
+      --shadow-soft: 0 14px 36px rgba(15, 39, 66, 0.08);
+      --shadow-sharp: 0 2px 14px rgba(15, 39, 66, 0.12);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+    body {
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    .container {
+      width: min(1200px, calc(100vw - 48px));
+      margin: 24px auto 48px;
+    }
+    .meta {
+      color: var(--muted);
+      font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif;
+      font-size: 13px;
+      letter-spacing: .02em;
+    }
+    .content {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 34px 36px;
+      box-shadow: var(--shadow-soft);
+    }
+    .content h1, .content h2, .content h3, .content h4 {
+      color: var(--primary);
+      font-family: "Noto Serif SC", serif;
+      line-height: 1.35;
+      margin-top: 1.35em;
+      margin-bottom: 0.55em;
+      letter-spacing: .01em;
+    }
+    .content h1 { font-size: 38px; margin-top: .1em; }
+    .content h2 { font-size: 30px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+    .content h3 { font-size: 24px; }
+    .content h4 { font-size: 20px; }
+    .content p, .content li, .content td, .content th { font-size: 16px; }
+    .content p { margin: .75em 0; }
+    .content ul, .content ol { padding-left: 1.4em; }
+    .content li { margin: .25em 0; }
+    .content blockquote {
+      margin: 16px 0;
+      padding: 14px 16px;
+      border-left: 4px solid var(--accent);
+      background: linear-gradient(120deg, rgba(200,169,107,.12), rgba(255,255,255,0));
+    }
+    .content hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 28px 0;
+    }
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 22px;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .content th, .content td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .content th {
+      background: #f3f5f7;
+      font-weight: 700;
+      color: #23364d;
+    }
+    .year-transition-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #f9fbff, #f4f7fb);
+      padding: 14px 16px;
+      margin: 12px 0 14px;
+    }
+    .year-status-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 3px rgba(0,0,0,.04);
+    }
+    .status-blue { background: #2f80ed; }
+    .status-green { background: #2e7d32; }
+    .status-orange { background: #ef6c00; }
+    .year-status-label {
+      font-weight: 700;
+      color: #17385f;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .year-status-judgement {
+      color: #4f6075;
+      font-size: 14px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .year-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .metric-box {
+      border: 1px solid #d8e0ea;
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px 12px;
+    }
+    .metric-name {
+      font-size: 12px;
+      color: #667a90;
+      margin-bottom: 4px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .metric-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1b2f47;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .metric-arrow { font-weight: 900; margin-right: 2px; }
+    .trajectory-card {
+      border: 1px dashed #b8c8dc;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fbfdff;
+      margin: 10px 0 14px;
+    }
+    .trajectory-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+    .trajectory-row:last-child { border-bottom: none; }
+    .trajectory-dim {
+      font-weight: 700;
+      color: #234568;
+      min-width: 86px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .trajectory-path {
+      color: #35597f;
+      font-size: 14px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .trajectory-summary {
+      margin-top: 8px;
+      color: #4a6079;
+      font-size: 14px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .trajectory-empty {
+      color: #5f738a;
+      font-size: 14px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .trend-tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: "IBM Plex Sans", sans-serif;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .trend-up-strong {
+      color: #1f6f34;
+      background: #eaf7ef;
+      border-color: #b8e0c4;
+    }
+    .trend-up {
+      color: #2e7d32;
+      background: #f1f9f3;
+      border-color: #c9e8cf;
+    }
+    .trend-flat {
+      color: #4f6072;
+      background: #f3f6fa;
+      border-color: #d6dde8;
+    }
+    .trend-down {
+      color: #a55200;
+      background: #fff1e4;
+      border-color: #f5cfaa;
+    }
+    .trend-delta {
+      display: inline-block;
+      margin-top: 2px;
+      color: #5a6f86;
+      font-size: 12px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .wordfreq-compare {
+      border: 1px solid #dbe4ef;
+      border-radius: 12px;
+      background: #fcfdff;
+      padding: 12px;
+      margin: 12px 0 14px;
+    }
+    .wordfreq-group + .wordfreq-group {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed #dbe4ef;
+    }
+    .wordfreq-title {
+      font-weight: 700;
+      color: #244567;
+      margin-bottom: 8px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .wordfreq-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 8px;
+      align-items: center;
+      margin: 6px 0;
+    }
+    .word-label {
+      color: #495f77;
+      font-size: 13px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .word-bars {
+      display: grid;
+      gap: 4px;
+    }
+    .word-bar {
+      min-width: 44px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      font-family: "IBM Plex Sans", sans-serif;
+      white-space: nowrap;
+      text-align: right;
+    }
+    .word-bar.y1.complaint { background: #e48d42; }
+    .word-bar.y2.complaint { background: #c96819; }
+    .word-bar.y1.trust { background: #52a37a; }
+    .word-bar.y2.trust { background: #2f7a53; }
+    .wordfreq-empty {
+      color: #5c7188;
+      font-size: 14px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .content td.gap-negative,
+    .content th.gap-negative {
+      background: #FDECEE !important;
+      color: #8B1E2D !important;
+      font-weight: 700 !important;
+    }
+    .content td.gap-negative strong,
+    .content th.gap-negative strong {
+      color: #8B1E2D !important;
+      font-weight: 700 !important;
+    }
+    /* 提升明显行高亮样式 */
+    .content tr.row-trend-up {
+      background: linear-gradient(90deg, rgba(46, 125, 50, 0.1), rgba(46, 125, 50, 0.03)) !important;
+      border-left: 3px solid #2e7d32;
+    }
+    .content tr.row-trend-up td:first-child {
+      border-left: none;
+      padding-left: 9px;
+    }
+    .content tr.row-trend-up td {
+      border-left-color: rgba(46, 125, 50, 0.15);
+    }
+    .trend-up-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      background: linear-gradient(135deg, #43a047, #2e7d32);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 4px;
+      margin-right: 6px;
+      vertical-align: middle;
+      box-shadow: 0 2px 4px rgba(46, 125, 50, 0.3);
+    }
+    .quote-end {
+      margin-top: 32px;
+      background: #0f2742;
+      color: #f6f8fb;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: var(--shadow-sharp);
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-end::before {
+      content: "";
+      position: absolute;
+      inset: -30% 0 auto 0;
+      height: 220px;
+      background: radial-gradient(circle at 20% 40%, rgba(200,169,107,.35), rgba(200,169,107,0) 60%);
+      pointer-events: none;
+    }
+    .quote-end blockquote {
+      margin: 0;
+      padding: 28px 28px 24px;
+      border: none;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-end .quote-en {
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 20px;
+      line-height: 1.55;
+      margin: 0 0 12px;
+      font-weight: 600;
+    }
+    .quote-end .quote-zh {
+      font-family: "Noto Serif SC", serif;
+      font-size: 18px;
+      line-height: 1.65;
+      margin: 0 0 10px;
+      color: #f5ead6;
+    }
+    .quote-end .quote-by {
+      margin: 0;
+      color: #d2d9e4;
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 14px;
+      letter-spacing: .04em;
+    }
+    .footnote {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    @media (max-width: 900px) {
+      .container { width: calc(100vw - 24px); margin: 12px auto 28px; }
+      .content { padding: 22px 16px; border-radius: 12px; }
+      .content h1 { font-size: 30px; }
+      .content h2 { font-size: 24px; }
+      .content h3 { font-size: 20px; }
+      .content p, .content li, .content td, .content th { font-size: 15px; }
+      .year-metrics-grid { grid-template-columns: 1fr; }
+      .wordfreq-row { grid-template-columns: 68px 1fr; }
+      .quote-end blockquote { padding: 20px 16px; }
+      .quote-end .quote-en { font-size: 18px; }
+      .quote-end .quote-zh { font-size: 16px; }
+    }
+    
+
+    .content-head {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(1120px 420px at 14% 14%, rgba(226, 192, 123, 0.34), rgba(226, 192, 123, 0) 42%),
+        radial-gradient(880px 320px at 86% 6%, rgba(134, 186, 239, 0.32), rgba(134, 186, 239, 0) 50%),
+        linear-gradient(145deg, #0b1d33 8%, #123255 52%, #25537f 100%);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 18px;
+      color: #f7fbff;
+      padding: 30px 30px 24px;
+      margin-bottom: 18px;
+      box-shadow:
+        0 28px 60px rgba(6, 21, 39, 0.42),
+        0 8px 28px rgba(6, 21, 39, 0.22),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .content-head::before {
+      content: "";
+      position: absolute;
+      width: 440px;
+      height: 320px;
+      left: -120px;
+      top: -120px;
+      background: radial-gradient(circle, rgba(255,255,255,.2), rgba(255,255,255,0) 72%);
+      pointer-events: none;
+      filter: blur(2px);
+    }
+    .content-head::after {
+      content: "";
+      position: absolute;
+      width: 520px;
+      height: 420px;
+      right: -160px;
+      top: -170px;
+      background: radial-gradient(circle, rgba(255,255,255,.24), rgba(255,255,255,0) 72%);
+      pointer-events: none;
+      filter: blur(3px);
+    }
+    .content-head h1 {
+      margin: 0 0 10px;
+      font-size: 58px;
+      line-height: 1.25;
+      font-family: "Noto Serif SC", serif;
+      letter-spacing: .02em;
+      position: relative;
+      z-index: 1;
+      color: #ffffff !important;
+      text-shadow: 0 14px 36px rgba(0,0,0,.42);
+    }
+    .content-head .head-meta {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      align-items: center;
+    }
+    .content-head .head-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.38);
+      color: #f7f3e8;
+      background: rgba(255,255,255,.1);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    .content-head .head-item {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(3,16,30,.24);
+      color: #e8f2ff;
+      font-size: 13px;
+      letter-spacing: .02em;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+    @media (max-width: 900px) {
+      .content-head h1 { font-size: 34px; }
+    }
+    </style>
+</head>
+<body>
+  <main class="container">
+    <section class="content" aria-label="markdown-full-content">
+      <section class="content-head">
+        <h1>2025年基层管理者测评反馈报告</h1>
+        <div class="head-meta">
+          <span class="head-chip">SURFIN 管理测评</span>
+          <span class="head-item">姓名：魏丽惠</span>
+          
+          <span class="head-item">测评周期：2025年度</span>
+        </div>
+      </section>
+      
+<blockquote>
+<p>数据说明：本年度共收回4份他评问卷，其中1份因全部维度给出相同分数、缺乏区分度，不符合测评数据质量要求，已予以剔除。以下分析基于3份有效他评数据。</p>
+</blockquote>
+<hr/>
+<h2>三年趋势总览（第三年视角）</h2>
+<h3>第三年视角：能力是否机制化</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">指标</th>
+<th style="text-align:right">2023 他评均分</th>
+<th style="text-align:right">2024 他评均分</th>
+<th style="text-align:right">2025 他评均分</th>
+<th style="text-align:right">2025-2024 变化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">22维核心管理维度均分</td>
+<td style="text-align:right">4.46</td>
+<td style="text-align:right">4.21</td>
+<td style="text-align:right">3.76</td>
+<td style="text-align:right">-0.45</td>
+</tr>
+</tbody>
+</table>
+<h3>口径说明</h3>
+<ul>
+<li>本报告三年对比仅使用 <strong>22维核心管理维度</strong>，不纳入价值观 5 维。</li>
+<li>三年趋势默认采用他评趋势，不做三年 Gap 趋势。</li>
+<li>2025年度剔除1份无效他评数据后重新测算。</li>
+</ul>
+<h3>三年维度趋势表</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">维度</th>
+<th style="text-align:right">2023</th>
+<th style="text-align:right">2024</th>
+<th style="text-align:right">2025</th>
+<th style="text-align:right">Δ(25-24)</th>
+<th style="text-align:left">趋势标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">专业能力</td>
+<td style="text-align:right">4.44</td>
+<td style="text-align:right">4.30</td>
+<td style="text-align:right">3.67</td>
+<td style="text-align:right"><strong>-0.63</strong></td>
+<td style="text-align:left">明显下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">全局意识</td>
+<td style="text-align:right">4.53</td>
+<td style="text-align:right">4.26</td>
+<td style="text-align:right">3.77</td>
+<td style="text-align:right"><strong>-0.49</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">优先级意识</td>
+<td style="text-align:right">4.63</td>
+<td style="text-align:right">4.30</td>
+<td style="text-align:right">3.97</td>
+<td style="text-align:right"><strong>-0.33</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">果断决策</td>
+<td style="text-align:right">4.50</td>
+<td style="text-align:right">4.31</td>
+<td style="text-align:right">3.70</td>
+<td style="text-align:right"><strong>-0.61</strong></td>
+<td style="text-align:left">明显下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">过程管理</td>
+<td style="text-align:right">4.51</td>
+<td style="text-align:right">4.29</td>
+<td style="text-align:right">3.70</td>
+<td style="text-align:right"><strong>-0.59</strong></td>
+<td style="text-align:left">明显下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">总结复盘</td>
+<td style="text-align:right">4.54</td>
+<td style="text-align:right">4.21</td>
+<td style="text-align:right">3.93</td>
+<td style="text-align:right"><strong>-0.28</strong></td>
+<td style="text-align:left">基本持平</td>
+</tr>
+<tr>
+<td style="text-align:left">团队氛围</td>
+<td style="text-align:right">4.56</td>
+<td style="text-align:right">4.14</td>
+<td style="text-align:right">3.70</td>
+<td style="text-align:right"><strong>-0.44</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">公正公平</td>
+<td style="text-align:right">4.45</td>
+<td style="text-align:right">4.09</td>
+<td style="text-align:right">3.57</td>
+<td style="text-align:right"><strong>-0.52</strong></td>
+<td style="text-align:left">明显下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">知人善任</td>
+<td style="text-align:right">4.40</td>
+<td style="text-align:right">4.30</td>
+<td style="text-align:right">3.80</td>
+<td style="text-align:right"><strong>-0.50</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">授权意识</td>
+<td style="text-align:right">4.50</td>
+<td style="text-align:right">4.21</td>
+<td style="text-align:right">3.67</td>
+<td style="text-align:right"><strong>-0.54</strong></td>
+<td style="text-align:left">明显下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">及时反馈</td>
+<td style="text-align:right">4.46</td>
+<td style="text-align:right">4.27</td>
+<td style="text-align:right">3.73</td>
+<td style="text-align:right"><strong>-0.54</strong></td>
+<td style="text-align:left">明显下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">换位思考/同理心</td>
+<td style="text-align:right">4.35</td>
+<td style="text-align:right">4.04</td>
+<td style="text-align:right">3.63</td>
+<td style="text-align:right"><strong>-0.41</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">向下辅导</td>
+<td style="text-align:right">4.28</td>
+<td style="text-align:right">4.13</td>
+<td style="text-align:right">3.73</td>
+<td style="text-align:right"><strong>-0.40</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">容错力</td>
+<td style="text-align:right">4.50</td>
+<td style="text-align:right">4.24</td>
+<td style="text-align:right">3.73</td>
+<td style="text-align:right"><strong>-0.51</strong></td>
+<td style="text-align:left">明显下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">创新能力</td>
+<td style="text-align:right">4.30</td>
+<td style="text-align:right">4.21</td>
+<td style="text-align:right">3.87</td>
+<td style="text-align:right"><strong>-0.34</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">学习能力</td>
+<td style="text-align:right">4.38</td>
+<td style="text-align:right">4.13</td>
+<td style="text-align:right">3.87</td>
+<td style="text-align:right"><strong>-0.26</strong></td>
+<td style="text-align:left">基本持平</td>
+</tr>
+<tr>
+<td style="text-align:left">自省</td>
+<td style="text-align:right">4.39</td>
+<td style="text-align:right">4.17</td>
+<td style="text-align:right">3.73</td>
+<td style="text-align:right"><strong>-0.44</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">影响力</td>
+<td style="text-align:right">4.53</td>
+<td style="text-align:right">4.19</td>
+<td style="text-align:right">3.80</td>
+<td style="text-align:right"><strong>-0.39</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">沟通协调</td>
+<td style="text-align:right">4.49</td>
+<td style="text-align:right">4.21</td>
+<td style="text-align:right">3.97</td>
+<td style="text-align:right"><strong>-0.24</strong></td>
+<td style="text-align:left">基本持平</td>
+</tr>
+<tr>
+<td style="text-align:left">情绪管理/抗压</td>
+<td style="text-align:right">4.51</td>
+<td style="text-align:right">4.11</td>
+<td style="text-align:right">3.73</td>
+<td style="text-align:right"><strong>-0.38</strong></td>
+<td style="text-align:left">下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">榜样意识</td>
+<td style="text-align:right">4.40</td>
+<td style="text-align:right">4.23</td>
+<td style="text-align:right">3.67</td>
+<td style="text-align:right"><strong>-0.56</strong></td>
+<td style="text-align:left">明显下滑</td>
+</tr>
+<tr>
+<td style="text-align:left">目标感</td>
+<td style="text-align:right">4.46</td>
+<td style="text-align:right">4.31</td>
+<td style="text-align:right">3.77</td>
+<td style="text-align:right"><strong>-0.54</strong></td>
+<td style="text-align:left">明显下滑</td>
+</tr>
+</tbody>
+</table>
+<h3>三年轨迹：你是怎么走到今天的</h3>
+<p>三年数据放在一起，魏丽惠的管理轨迹呈现出一条持续下行的弧线：4.46到4.21到3.76。这条弧线值得认真对待。</p>
+<p>2024到2025年度，你经历了产假离岗期，这对本年度分数确实有客观影响。但有一个事实不能忽略：从2023到2024的下滑幅度是0.25，而那一年你并没有离岗。换句话说，下行趋势在产假之前就已经开始了。这意味着除了物理不在场之外，还有一些结构性的管理课题正在积累，需要你在回归后正视和处理。</p>
+<p>在这条整体下行线里，有三个维度展现出了显著的韧性：沟通协调（-0.24）、学习能力（-0.26）、总结复盘（-0.28），这恰好是你在自述中反复强调的核心能力方向。它们在三年间的保持程度远好于其他维度，说明你最用心投入的管理动作确实被团队感知到了，而且形成了某种程度的惯性。</p>
+<p>与此同时，下滑最陡的一组维度集中在执行管控类：专业能力（-0.63）、果断决策（-0.61）、过程管理（-0.59）。这三个维度的跌幅远超平均水平，指向的不只是在场频率的下降，更可能反映了团队在关键决策节点上长期缺少你的直接介入。</p>
+<p>团队的开放题反馈质量值得关注。对你在关键项目中的统筹和质量坚持，团队给出了非常具体、带有细节的正面评价。但也有团队成员提出了关于管理公平性和情感关注的直接期待。两种声音同时存在，说明你的管理影响力没有消失，但团队内部对你的管理体验正在出现分化。</p>
+<h3>2025 相比 2024 重点变化</h3>
+<p>降幅最小 TOP 5（体现韧性的维度）：</p>
+<ul>
+<li>沟通协调：-0.24</li>
+<li>学习能力：-0.26</li>
+<li>总结复盘：-0.28</li>
+<li>优先级意识：-0.33</li>
+<li>创新能力：-0.34</li>
+</ul>
+<p>降幅最大 TOP 5：</p>
+<ul>
+<li>专业能力：-0.63</li>
+<li>果断决策：-0.61</li>
+<li>过程管理：-0.59</li>
+<li>榜样意识：-0.56</li>
+<li>授权意识：-0.54</li>
+</ul>
+<hr/>
+<h2>一页纸摘要</h2>
+<h3>核心数据速览</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">指标</th>
+<th style="text-align:center">本年他评</th>
+<th style="text-align:center">本年自评</th>
+<th style="text-align:center">Gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>综合得分</strong></td>
+<td style="text-align:center">3.79</td>
+<td style="text-align:center">3.61</td>
+<td style="text-align:center">0.18</td>
+</tr>
+</tbody>
+</table>
+<h3>一句话趋势判断</h3>
+<p>22维三年连续下行（4.46到4.21到3.76），本年降幅加大。数据背后有两层信号需要区分：一层是回归初期管理在场感尚未恢复带来的整体评分回落，另一层是团队内部对管理公平性和个体关注度的分化感知正在加深。当前最核心的课题不只是重新露面，而是在露面的同时回应团队中那些没有被充分看见的成员。</p>
+<h3>你的管理特征</h3>
+<p><strong>最突出的优势（团队眼中）</strong></p>
+<ul>
+<li><strong>拥抱变化</strong>（他评 4.07）：在菲律宾WEEX项目中面对技术债、时间压力和资源不足的三重挑战，你展现出的定力和决策力是团队印象最深的管理时刻。</li>
+<li><strong>自我驱动</strong>（他评 4.03）：团队感受到的不只是你自己学习新技术的主动性，更是你把学习转化为对团队成员支持的那种外溢效应。</li>
+</ul>
+<p><strong>最需关注的盲区</strong></p>
+<ul>
+<li>本年度有5个维度落入盲区（自评高于他评）：<strong>果断决策、过程管理、团队氛围、公正公平、授权意识</strong>。其中公正公平（他评3.57，全维度最低）和授权意识（Gap -0.33，最大负向偏差）是两个需要优先关注的信号。盲区数量较多，意味着你对自身管理状态的感知与团队的真实体验之间存在一定距离，需要在回归后通过更密集的团队互动来校准。</li>
+</ul>
+<h3>核心建议</h3>
+<p>本轮数据最值得关注的不是分数本身的高低，而是团队感知的分化。在大多数成员依然认可你的统筹能力和抗压表现的同时，有成员直接表达了对管理决策客观性的期待，希望评判标准更多基于产出而非个人感受。这个声音的分量不在于它代表多少人，而在于它指向了管理信任的底线问题。</p>
+<p>当前最值得做的一件事：在关键决策节点重新建立可见的在场感的同时，有意识地检视自己在资源分配、关注度分配和绩效评价中，是否对每位成员都保持了一致的标准。</p>
+<hr/>
+<h2>Part 1：你的管理画像</h2>
+<blockquote>
+<p>三年趋势提示：22维三年均分由 4.46到4.21到3.76，今年较去年 -0.45。当前优先课题是在重建在场感的同时，回应团队中分化的管理体验。</p>
+</blockquote>
+<h3>自我认知 vs 团队认知 四象限分析</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">自评 低</th>
+<th style="text-align:left">自评 高</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>他评 高</strong></td>
+<td style="text-align:left"><strong>潜能区</strong>：拥抱变化、自我驱动、创新能力、学习能力、极致执行、创业心态</td>
+<td style="text-align:left"><strong>优势共识区</strong>：优先级意识、总结复盘</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>他评 低</strong></td>
+<td style="text-align:left"><strong>待发展共识区</strong>：专业能力、榜样意识</td>
+<td style="text-align:left"><strong>盲区</strong>：果断决策、过程管理、团队氛围、公正公平、授权意识</td>
+</tr>
+</tbody>
+</table>
+<p><em>说明：四象限采用 Top/Bottom 33% 交叉法，仅对同时具备自评与他评分数的维度进行分类。</em></p>
+<p><strong>整体特征</strong>：自评与他评的均值差为 0.18，看起来不大，但分布非常不均匀。在价值观和综合素质类维度上，团队评分系统性高于自评（Gap最大达+0.60）；在管理业务和管理团队类维度上，出现了5个盲区，自评系统性高于他评。这种两极分化的Gap结构说明：你对自己在态度、学习、适应力方面偏谦虚，但对自己在具体管理执行层面的状态偏乐观。</p>
+<hr/>
+<p><strong>优势共识区</strong></p>
+<p><strong>优先级意识、总结复盘</strong></p>
+<p>优先级意识（他评 3.97）是你在22维核心管理维度里的最高分。你在Q1里描述了一个非常扎实的案例：面对哈萨克斯坦众多高优先级需求，你跟产品沟通取Top5最高优先级，并且约定了后续需求插入的限制机制。这个动作的含金量在于你不只是在排序，你是在业务压力下完成了跨部门的边界谈判，保护了技术团队的专注空间。团队感知到的是，跟着你走会有清晰的方向，不会被无效变更反复拉扯。</p>
+<p>总结复盘（他评 3.93）是三年趋势中最稳定的维度之一（-0.28），也是降幅最小的前三。虽然你的自述里没有直接写过复盘，但团队在基建项目的反馈中提到你提前识别风险、协调各端在节奏和优先级上保持一致。这种提前预判的习惯，往往来源于长期复盘积累形成的直觉。</p>
+<p>这两个优势集中在管理业务板块，而且在整体大幅下行的背景下保持了相对韧性。回归后优先把这两个已经验证有效的管理动作重新提到更高频率，是恢复团队信心最直接的路径。</p>
+<hr/>
+<p><strong>潜能区</strong></p>
+<p><strong>拥抱变化、自我驱动、创新能力、学习能力、极致执行、创业心态</strong></p>
+<p>这六个维度有一个共同特征：你的自评集中在3.5，但团队给出了3.87到4.07的高分，Gap在0.37到0.57之间。这是一种系统性的自我低估。你在几乎所有态度和综合素质类维度上，都明显低估了团队对你的感知。</p>
+<p>拥抱变化（他评 4.07）是全维度里的最高分。团队反馈里那段关于菲律宾WEEX项目的描述非常生动：在项目背负技术债、时间紧、任务重的多重压力下，你的反应不是焦虑，而是主动对外协调资源、对内重新拆解优先级。这种在不确定性中保持镇定的能力，是团队对你信任感的核心来源。</p>
+<p>自我驱动（他评 4.03）在你的Q2自述里有一句很关键的话：你学习新技术是为了更好地理解和支持团队内优秀成员的想法。团队接收到的正是这个信号。你的自驱不是为了个人表现，而是转化成了对团队的支持力。</p>
+<p>这六个维度的高Gap不是问题，但需要你认真思考一个事情：为什么在团队明确认可你这些特质的情况下，你自己却给了一个明显偏低的自评？是回归后信心还没有恢复，还是你习惯性地用更高的标准要求自己？如果是后者，这种自我低估虽然不会伤害别人，但长期来看会影响你在管理中展现应有的自信和果断。</p>
+<hr/>
+<p><strong>盲区</strong></p>
+<p><strong>果断决策、过程管理、团队氛围、公正公平、授权意识</strong></p>
+<p>先说整体判断：五个维度同时落入盲区，数量偏多。这意味着你对自己在具体管理执行层面的状态评估，与团队的真实感知之间存在一段距离。这段距离不一定是能力问题，但它确实说明你在这些维度上的管理动作，要么频率不够高，要么可见度不够强，以至于团队的感受跟你自己的认知产生了偏差。</p>
+<p><strong>公正公平</strong>（自评 3.8 vs 他评 3.57，Gap -0.23）是本年度全维度的最低分。这个分数需要认真对待。有团队成员在开放题中直接表达了三个期待：工作中尽量不掺杂个人情绪、对事不对人、以产出为衡量标准而非个人喜好来评判。这些话说得非常直接，它指向的核心诉求是：希望管理决策和评价更加客观、透明、可预期。不管这种感知是否完全准确地反映了你的意图，它至少说明在某些场景下，你的决策逻辑没有被团队成员清晰地看到。当评判标准不透明的时候，人很容易用自己的猜测去填补空白，而这些猜测往往偏向负面。</p>
+<p><strong>授权意识</strong>（自评 4.0 vs 他评 3.67，Gap -0.33）是Gap最大的维度。你在Q3里提到了自己应对精力不足的方式：抓大放小，参与关键事项，其他均下放，并由个人backup帮你承担更多。这个策略方向是对的，但团队的低分可能来自两个层面：一是下放的时候缺少明确的成功标准和对齐节点，导致承接者觉得是被动接活而不是获得成长空间；二是有些成员可能感到被关注的机会变少了，而另一些成员因为承担了更多反而觉得负担不均。</p>
+<p><strong>过程管理</strong>（自评 4.0 vs 他评 3.70，Gap -0.30）：团队在反馈中确实认可你在基建项目中的统筹协同能力，但3.70的分数说明这种能力的发挥不够稳定。可能在那个具体项目中你做到了，但在日常管理中，团队感知到的过程管控频率还不够。</p>
+<p><strong>果断决策</strong>（自评 3.8 vs 他评 3.70，Gap -0.10）和<strong>团队氛围</strong>（自评 3.8 vs 他评 3.70，Gap -0.10）：这两个维度的Gap相对较小，但都在3.70的低位。结合团队反馈中反复出现的对情感连接和轻松交流场景的期待，团队氛围的低分背后，可能是高压节奏下缺少了让团队喘口气、感受到被关心的缓冲空间。</p>
+<hr/>
+<p><strong>待发展共识区</strong></p>
+<p><strong>专业能力、榜样意识</strong></p>
+<p>这两个维度双方的判断方向一致：你觉得有提升空间，团队也这么看。但有一个值得注意的细节：两个维度的他评（3.67）都高于你的自评（专业能力3.5、榜样意识3.2），团队对你的评价并没有你想象得那么低。</p>
+<p>专业能力（他评 3.67）的年度降幅达到-0.63，是所有维度里最大的。这个跌幅很可能跟你在关键技术节点上的参与频率直接相关。你在Q4里也提到了AI领域的快速发展需要跟上，并且已经在通过自学和授权团队成员做专项调研来应对。方向是对的，回归后在下一次重要的架构讨论或技术评审中深度参与一次，分数大概率会得到修复。</p>
+<p>榜样意识（他评 3.67，自评 3.2，Gap +0.47）：你自评3.2分，可能受到了对自身状态不够满意的影响。但团队给了3.67，他们看到的是你在项目节点里的坚持和质量底线的把控。管理不必处处亲力亲为才算好榜样，在关键时刻站出来定调和兜底，本身就是一种榜样。</p>
+<hr/>
+<h2>Part 2：数据全景</h2>
+<blockquote>
+<p>三年趋势提示：对比 2024，降幅最小的是 沟通协调（-0.24），体现韧性；降幅最大的是 专业能力（-0.63），需优先关注。</p>
+</blockquote>
+<h3>各维度得分明细</h3>
+<h4>管理业务</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">维度</th>
+<th style="text-align:center">本年他评</th>
+<th style="text-align:center">本年自评</th>
+<th style="text-align:center">Gap</th>
+<th style="text-align:center">四象限</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">专业能力</td>
+<td style="text-align:center">3.67</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.17</td>
+<td style="text-align:center">待发展共识区</td>
+<td style="text-align:left">降幅最大(-0.63)</td>
+</tr>
+<tr>
+<td style="text-align:left">全局意识</td>
+<td style="text-align:center">3.77</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.27</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">优先级意识</td>
+<td style="text-align:center">3.97</td>
+<td style="text-align:center">3.8</td>
+<td style="text-align:center">0.17</td>
+<td style="text-align:center">优势共识区</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">果断决策</td>
+<td style="text-align:center">3.70</td>
+<td style="text-align:center">3.8</td>
+<td class="gap-negative" style="text-align:center"><strong>-0.10</strong></td>
+<td style="text-align:center">盲区</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">过程管理</td>
+<td style="text-align:center">3.70</td>
+<td style="text-align:center">4.0</td>
+<td class="gap-negative" style="text-align:center"><strong>-0.30</strong></td>
+<td style="text-align:center">盲区</td>
+<td style="text-align:left">Gap较大</td>
+</tr>
+<tr>
+<td style="text-align:left">总结复盘</td>
+<td style="text-align:center">3.93</td>
+<td style="text-align:center">4.0</td>
+<td class="gap-negative" style="text-align:center">-0.07</td>
+<td style="text-align:center">优势共识区</td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<h4>管理团队</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">维度</th>
+<th style="text-align:center">本年他评</th>
+<th style="text-align:center">本年自评</th>
+<th style="text-align:center">Gap</th>
+<th style="text-align:center">四象限</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">团队氛围</td>
+<td style="text-align:center">3.70</td>
+<td style="text-align:center">3.8</td>
+<td class="gap-negative" style="text-align:center"><strong>-0.10</strong></td>
+<td style="text-align:center">盲区</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">公正公平</td>
+<td style="text-align:center">3.57</td>
+<td style="text-align:center">3.8</td>
+<td class="gap-negative" style="text-align:center"><strong>-0.23</strong></td>
+<td style="text-align:center">盲区</td>
+<td style="text-align:left">全维最低分</td>
+</tr>
+<tr>
+<td style="text-align:left">知人善任</td>
+<td style="text-align:center">3.80</td>
+<td style="text-align:center">4.0</td>
+<td class="gap-negative" style="text-align:center">-0.20</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">授权意识</td>
+<td style="text-align:center">3.67</td>
+<td style="text-align:center">4.0</td>
+<td class="gap-negative" style="text-align:center"><strong>-0.33</strong></td>
+<td style="text-align:center">盲区</td>
+<td style="text-align:left">Gap最大</td>
+</tr>
+<tr>
+<td style="text-align:left">及时反馈</td>
+<td style="text-align:center">3.73</td>
+<td style="text-align:center">3.6</td>
+<td style="text-align:center">0.13</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">换位思考/同理心</td>
+<td style="text-align:center">3.63</td>
+<td style="text-align:center">3.6</td>
+<td style="text-align:center">0.03</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">向下辅导</td>
+<td style="text-align:center">3.73</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.23</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">容错力</td>
+<td style="text-align:center">3.73</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.23</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<h4>管理者综合素质</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">维度</th>
+<th style="text-align:center">本年他评</th>
+<th style="text-align:center">本年自评</th>
+<th style="text-align:center">Gap</th>
+<th style="text-align:center">四象限</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">创新能力</td>
+<td style="text-align:center">3.87</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.37</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">学习能力</td>
+<td style="text-align:center">3.87</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.37</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">自省</td>
+<td style="text-align:center">3.73</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.23</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">影响力</td>
+<td style="text-align:center">3.80</td>
+<td style="text-align:center">3.2</td>
+<td style="text-align:center">0.60</td>
+<td style="text-align:center"></td>
+<td style="text-align:left">分差较大</td>
+</tr>
+<tr>
+<td style="text-align:left">沟通协调</td>
+<td style="text-align:center">3.97</td>
+<td style="text-align:center">3.6</td>
+<td style="text-align:center">0.37</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">情绪管理/抗压</td>
+<td style="text-align:center">3.73</td>
+<td style="text-align:center">3.2</td>
+<td style="text-align:center">0.53</td>
+<td style="text-align:center"></td>
+<td style="text-align:left">分差较大</td>
+</tr>
+<tr>
+<td style="text-align:left">榜样意识</td>
+<td style="text-align:center">3.67</td>
+<td style="text-align:center">3.2</td>
+<td style="text-align:center">0.47</td>
+<td style="text-align:center">待发展共识区</td>
+<td style="text-align:left">分差较大</td>
+</tr>
+<tr>
+<td style="text-align:left">目标感</td>
+<td style="text-align:center">3.77</td>
+<td style="text-align:center">3.8</td>
+<td class="gap-negative" style="text-align:center">-0.03</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<h4>价值观</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">维度</th>
+<th style="text-align:center">本年他评</th>
+<th style="text-align:center">本年自评</th>
+<th style="text-align:center">Gap</th>
+<th style="text-align:center">四象限</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">简单开放</td>
+<td style="text-align:center">3.73</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.23</td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">极致执行</td>
+<td style="text-align:center">3.87</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.37</td>
+<td style="text-align:center">潜能区</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">自我驱动</td>
+<td style="text-align:center">4.03</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.53</td>
+<td style="text-align:center">潜能区</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">拥抱变化</td>
+<td style="text-align:center">4.07</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.57</td>
+<td style="text-align:center">潜能区</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">创业心态</td>
+<td style="text-align:center">3.87</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">0.37</td>
+<td style="text-align:center">潜能区</td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3>优势与待提升对照</h3>
+<p><strong>TOP 5 优势维度（他评最高）</strong></p>
+<p><strong>拥抱变化</strong>（他评 4.07，价值观维度）</p>
+<p>全维度最高分。团队在反馈里明确提到菲律宾WEEX项目中，面对技术债和时间压力，你展现出了极强的定力与决策力。你在那个高压场景里的反应不是回避或焦虑，而是主动对外找资源、对内重新排优先级，确保项目按期交付。这种在混乱中稳住阵脚的能力，是团队信任你的底层原因。</p>
+<hr/>
+<p><strong>自我驱动</strong>（他评 4.03，价值观维度）</p>
+<p>团队感受到的不只是你在学习AI新技术这件事本身，更是你学习的目的：为了更好地理解和支持团队内优秀成员的想法，让成员感到成就感和获得必要的支持。你的自我驱动不是独善其身式的个人进步，而是向团队辐射的支持型驱动，这一点在反馈中被清晰感知到了。</p>
+<hr/>
+<p><strong>优先级意识</strong>（他评 3.97）</p>
+<p>你在Q1中描述的哈萨克斯坦项目案例是一个教科书级别的优先级管理动作：面对众多高优先级需求，你没有逐一应付，而是和产品达成了取Top5的共识，并且约定了需求插入的限制规则。这个动作保护了技术团队两周内的专注交付，扭转了需求变更不断累积的困境。团队感知到的是，你在复杂局面里能做出清晰的取舍判断。</p>
+<hr/>
+<p><strong>沟通协调</strong>（他评 3.97）</p>
+<p>从哈萨克斯坦项目的跨团队协调后端和QA支持人员，到基建项目里梳理各端依赖关系和关键节点，你的跨端沟通能力在开放题里被多次具体描认。这个维度的年度降幅仅-0.24，是22维中保持最稳定的，说明你在沟通连接方面的管理动作已经内化，即使在场频率下降也能维持。</p>
+<hr/>
+<p><strong>总结复盘</strong>（他评 3.93）</p>
+<p>虽然你在自述中没有直接提到复盘，但团队在基建项目反馈里描述的那些行为本身就是复盘思维的实时运转：从全局角度梳理各端的依赖关系和关键节点，提前识别风险，协调不同团队在节奏和优先级上的一致性。这种前瞻性管理，是经验沉淀到一定厚度之后才会出现的能力。</p>
+<hr/>
+<p><strong>LAST 5 待提升维度（他评最低）</strong></p>
+<p>先看一个整体图景：这5个维度的分数区间在3.57到3.67之间，集中度很高。其中公正公平是唯一低于3.60的维度，需要单独关注。</p>
+<p><strong>公正公平</strong>（他评 3.57，全维最低，Gap -0.23）</p>
+<p>这是本次测评中信号最强的一个维度。3.57不仅是全维度最低分，而且它的团队评分显著低于你的自评（3.8），说明你对自身在这个维度上的状态认知，跟团队的实际感受之间有落差。</p>
+<p>结合开放题中成员的直接反馈来看，有人明确期待你在管理中能减少个人情绪的影响、以产出为衡量标准而非个人偏好。这个声音传递的核心信息是：在某些场景下，你的决策依据和评价标准对团队成员来说不够透明。不一定是你真的不公正，但如果团队成员看不到你的判断逻辑，他们就只能用自己的感受去填补信息空白。</p>
+<p>建议做一件事：在下一次涉及资源分配、任务调整或绩效评价的场景中，主动向团队讲清楚决定的依据是什么、为什么这样分配。透明度本身就是公平感的最大来源。</p>
+<hr/>
+<p><strong>换位思考/同理心</strong>（他评 3.63，Gap +0.03）</p>
+<p>团队反馈里两次出现了同一个关键词：压力大。成员们期待在业务之外有一些轻松的交流场景，希望能被关心工作和精神状态。这不是一个很大的要求，但它指向了一个重要的需求：在高压节奏中，团队需要的不只是一个能指挥的大脑，还有一个能让人觉得安全的存在。在你精力有限的阶段，这个需求可能被无意中搁置了。</p>
+<p>建议做一件事：选一个刚经历过高强度项目交付的成员，请他喝杯咖啡，只聊近况和感受，不主动把话题引向项目复盘。</p>
+<hr/>
+<p><strong>专业能力</strong>（他评 3.67，降幅 -0.63，全维最大）</p>
+<p>降幅最大，但Gap为正（+0.17，团队评分高于自评）。这说明团队并不认为你的专业能力本身有问题，更可能是你在关键技术决策节点上的参与频率下降了，导致团队缺少了你提供专业输入的机会。回归后在下一次重大架构讨论或技术评审中深度参与一次，这个分数大概率会自然修复。</p>
+<hr/>
+<p><strong>授权意识</strong>（他评 3.67，Gap -0.33）</p>
+<p>Gap在所有维度中最大。你在Q3中描述的应对策略本身是合理的：精力不足时抓大放小、其他下放。但团队感知到的可能不是被赋予了空间和信任，而是被分配了额外的负担。这种感受上的差异，通常来自于授权过程中缺少两个关键动作：一是事前明确交接事项的成功标准和你期望的产出水平，二是在关键节点安排对齐而不是全程不过问。当授权缺少这两个环节，承接者会觉得自己是在孤军奋战，而不是在获得成长机会。</p>
+<hr/>
+<p><strong>榜样意识</strong>（他评 3.67，Gap +0.47）</p>
+<p>你自评只给了3.2分，团队给了3.67，他们对你的感知好于你对自己的判断。你的3.2分可能更多反映的是回归后对自身状态不够满意的心理投射，而不是团队真实的评价。在关键项目中坚持质量底线、在高压下稳住团队方向，这些行为本身就是榜样意识的体现。不需要事事亲力亲为才能成为团队的标杆。</p>
+<hr/>
+<h2>Part 3：团队的声音</h2>
+<h3>1. 认可的声音：团队认可的做得好的时刻</h3>
+<blockquote>
+<p>在菲律宾去WEEX的项目中，在项目背负技术债、时间紧、任务重的情况下，领导展现了极强的定力与决策力。特别出色的是在遇到由跨部门协作难、资源不足导致的卡点时，主动对外协调资源，对内清晰地重新拆解优先级，确保项目按时上线。</p>
+</blockquote>
+<blockquote>
+<p>我们团队内部发起的项目，惠姐会第一时间提供各种资源支持，并且鼓励大家创新进取。</p>
+</blockquote>
+<blockquote>
+<p>在推进各端的基建项目过程中，领导同时推进 QA、Web、iOS 和 Android各端的任务。在这个过程中，她在多个方面表现得非常突出：首先是整体统筹和协同能力，能够从全局角度梳理各端的依赖关系和关键节点，提前识别风险，并协调不同团队在节奏和优先级上的一致性；其次是质量意识非常强，在版本推进过程中始终坚持质量底线，通过测试策略、回归范围控制和风险评估，避免了因赶进度而带来的线上隐患；同时在关键节点，她也会主动参与问题推动和决策，帮助团队快速收敛方案，保证项目按期、稳定交付。</p>
+</blockquote>
+<p>证据摘要：团队对你的正面评价集中在两个核心能力上。第一是复杂项目中的统筹与协同：从WEEX项目的跨部门资源调配到基建项目的多端并行管控，你的全局视角和节奏把控能力被反复提及。第二是在高压场景下的稳定输出：面对技术债、时间紧、资源不足的多重压力，你给团队传递的不是焦虑，而是方向感和安全感。</p>
+<p>值得注意的是，有一位成员在被问及印象深刻的管理时刻时回答了暂无。这本身就是一个信号：并不是所有团队成员都能回忆起你的管理动作给他们留下深刻印象的时刻。这跟你的管理关注度在不同成员之间的分布可能有关。</p>
+<p>关键标签：拥抱变化、优先级意识、沟通协调、过程管理</p>
+<h3>2. 期待的声音：团队期待的改进方向</h3>
+<blockquote>
+<p>大家平时工作节奏很快，压力较大。希望能在业务之外，增加一些轻松的交流场景，增强团队凝聚力和成员间的情感链接。</p>
+</blockquote>
+<blockquote>
+<p>多给予下属工作方向上的指引，多给予下属工作资源上的帮助，多关心下属的工作和精神状态，并给予必要的关心。</p>
+</blockquote>
+<blockquote>
+<p>工作尽量不掺杂个人情绪；对事不对人；以产出为衡量标准，而不是以个人喜好来评判。</p>
+</blockquote>
+<p>证据摘要：三条期待指向了三个不同但相互关联的管理层面。</p>
+<p>第一条来自对情感连接的渴望。在高压节奏下，团队需要的不只是业务方向的清晰，还有情绪层面的缓冲空间。这对应的是团队氛围和换位思考这两个维度。这类需求不需要大量时间投入，一次非正式的午餐、一次不谈业务进度的聊天，就能产生显著的效果。</p>
+<p>第二条来自对管理可见度的期待。方向指引、资源支持、状态关心，三个需求的共同点是：这位成员觉得自己没有被充分看见。这可能跟你在精力有限时优先关注关键事项、其余下放的策略有关。被下放的那些事项背后，可能有人正在等待你的一个确认、一个方向、一个关心。</p>
+<p>第三条是本次反馈中最值得认真对待的声音。它直接指向了公正公平的核心：评判标准的客观性和一致性。这位成员希望管理决策更多基于产出和事实，而非个人情绪或偏好。这个反馈的意义不在于它是否百分百准确地描述了你的意图，而在于它代表了团队中某个成员的真实感受。当一个人觉得自己不是被产出评价而是被个人好恶评价的时候，他的工作动力和对管理者的信任都会受到根本性的影响。</p>
+<p>这三条期待叠加在一起，构成了一个完整的画面：你的管理影响力在关键项目中很强，但在日常管理中的均匀覆盖度有待提升。有些成员感受到了你的支持和信任，有些成员则感到被忽略甚至被不公平地对待。这种体验的分化，比任何单一维度的低分都更值得你在回归后优先处理。</p>
+<hr/>
+<h2>Part 4：管理者自述与呼应</h2>
+<h3>你的自我反思</h3>
+<p><strong>Q1：请回忆一个您印象深刻的、您成功领导团队完成的项目或任务。在这个过程中，你在哪些方面做得特别出色？请具体描述当时的情景和做法。</strong></p>
+<p>哈萨克斯塔需求优先级及各端人力协调。与产品沟通达成众多高优先级需求取Top5最高优先级，以及约定后续需求插入限制达成共识，保障技术团队在近两周内能够专注既定需求交付；跨团队协调后端、QA支持人员，高效交付优先级Top5需求，扭转深陷需求优先级变更在途越来越多囧况。</p>
+<p><strong>Q2：在日常管理工作中，您认为自己做得最出色、最有成效的三个方面是什么？可适当举例说明。</strong></p>
+<p>能够自驱学习了解新技术，以便更好的理解、支持团队内优秀成员的想法，让成员感到成就感及获得必要的支持；团队间协调，能够既本着保障业务需求高效交付的目标，又能协调高效分配团队资源；做团队成员的倾听者，给予团队成员发挥的空间，提升团队的积极性及信心</p>
+<p><strong>Q3：在过去一年，您在领导团队的过程中，遇到的最大挑战或困难是什么？您当时是如何应对的？现在回顾，您认为可以有哪些不同的处理方式？</strong></p>
+<p>个人精力的不足。暂时主要抓大放小，参与关键事项，其他均下放以及由个人backup帮助我承担更多</p>
+<p><strong>Q4：您认为在未来的管理工作中，最需要关注或学习的技能或知识是什么？您打算如何学习和掌握这些技能？</strong></p>
+<p>AI相关的，技术团队在AI方面的发展快速，必须跟上发展。当前是通过视频和公众号进行学习基础理论知识和关注发展动态，同时可以跟AI讨论交流补充相关知识，具体的实际应用主要是专项技术调研及项目开发，暂时识别团队成员并授权跟进，通过跟进获取反馈及进一步学习、探讨，把握大方向</p>
+<h3>自我认知与他评的呼应分析</h3>
+<p><strong>Q1 自述（哈萨克斯坦需求应对）</strong> 对应维度：优先级意识、沟通协调。</p>
+<p>这段描述展示了一个非常关键的管理能力：在业务压力下完成跨部门的边界谈判。面对众多需求，你不是一个一个排优先级，而是直接跟产品达成了一个约束规则。这是从被动应对到主动设规则的质变。团队给你优先级意识3.97和沟通协调3.97的高分，底层原因就在这里：你保护了团队免受无效变更的反复冲击。</p>
+<p>不过，这段自述也透露了一个信息：你选择的管理高光时刻是一个业务侧的跨部门博弈场景，而不是一个团队管理侧的事件。这跟你的管理画像是一致的：你的管理优势集中在业务牵引方面，而在团队内部的人际管理方面，投入的精力和留下的印象相对较少。</p>
+<p><strong>Q2 自述（自驱学习与倾听支持）</strong> 对应维度：自我驱动、换位思考/同理心。</p>
+<p>你提到的三个方面有一个共同的底色：你在描述自己的管理方式时，核心逻辑是通过支持团队来间接创造价值，而不是直接指挥。自驱学习是为了理解团队成员的想法，协调资源是为了高效分配，倾听是为了给空间。这是一种支持型的管理风格，团队中那些被这种风格覆盖到的成员对你的评价很高。</p>
+<p>但支持型管理有一个固有的挑战：它对不同成员的覆盖往往不均匀。你倾向于支持那些你理解和认可的优秀成员，这些人自然会给你高分。而那些需要更多方向指引和主动关注的成员，可能恰好是在你的支持雷达之外的。团队反馈中那条关于方向指引、资源帮助和精神关心的期待，大概率就来自这个覆盖盲区。</p>
+<p><strong>Q3 自述（精力不足的挑战）</strong> 对应维度：授权意识、过程管理。</p>
+<p>你非常坦诚地指出了精力不足是最大挑战，应对策略是抓大放小、下放任务、由backup承担更多。这个策略在精力受限时是务实的选择。但有两个地方值得回头看：一是你提到由个人backup帮你承担更多，这说明你在精力不足时的第一反应是找人帮自己分担，而不是系统性地授权团队成员独立承接。分担和授权是两件不同的事情：分担是临时的、应急的、对方是在帮你的忙；授权是有目标的、有成长性的、对方是在获得独立空间。团队在授权意识上给了3.67分（Gap -0.33），可能正是因为他们感受到的更多是前者而非后者。</p>
+<p>二是你说现在回顾是否有不同处理方式时没有展开。这本身不是问题，但如果从复盘的角度看，一个值得思考的方向是：如果再来一次，你会如何在下放任务的同时确保每个承接者都清楚知道这件事做到什么程度算成功？</p>
+<p><strong>Q4 自述（AI技能学习规划）</strong> 对应维度：拥抱变化、学习能力。</p>
+<p>这一条展示了你应对技术变化的方法论：自己学理论打基础，识别团队中的合适人选做专项调研和项目开发，通过跟进获取反馈并把握大方向。这是一种结构化的学习和探索路径，跟拥抱变化4.07和学习能力3.87的高分完全对应。你不只是在追赶趋势，已经在尝试把趋势转化成团队可执行的方向。</p>
+<hr/>
+<h2>Part 5：发展建议与下一步</h2>
+<blockquote>
+<p>三年趋势提示：下行趋势在离岗之前就已经开始，回归后需要同时处理在场感恢复和管理公平性校准两个课题。</p>
+</blockquote>
+<h3>基于测评的发展建议</h3>
+<p><strong>建议一：让管理决策的依据变得透明</strong></p>
+<p>公正公平是本次全维最低分（3.57），也是团队反馈中直接指向的核心议题。有成员明确期待以产出为衡量标准、减少个人情绪的影响。这个诉求的本质不是质疑你的判断力，而是希望看到判断背后的逻辑。</p>
+<p>行为动作：在下一次涉及任务分配、资源倾斜或绩效评价时，主动向相关成员讲清楚你的判断依据。不需要长篇解释，一两句话就够了，比如这件事交给你是因为你在某方面的经验最匹配，或者这次资源优先给某项目是因为某个具体的业务优先级。核心是让决策过程从你脑子里走出来，变成团队可以看到的东西。</p>
+<p>观察信号：团队成员在接到分配或评价后，是否还会出现对依据的困惑或对公平性的质疑？</p>
+<p>业务指标：团队成员的主动参与度和任务承接意愿是否有变化。</p>
+<p>执行节奏：从下一次1v1或任务分配开始执行。</p>
+<hr/>
+<p><strong>建议二：把被动下放升级为有目标的授权</strong></p>
+<p>授权意识的Gap是所有维度中最大的（-0.33），说明你自认为已经在授权，但团队感受到的不是空间和信任，更像是被分配了额外的负担。</p>
+<p>行为动作：下一次交出一个任务时，多做一个动作：花五分钟跟承接人一起确认这件事做到什么程度算成功，然后约定一到两个关键对齐节点。在节点之间不过问细节，到节点时只关注结果和卡点。让承接者感受到的是获得了独立空间和信任，而不是替你分担了工作量。</p>
+<p>观察信号：承接人在对齐节点是否能主动带着方案来而不是带着问题来？</p>
+<p>业务指标：非计划内的临时汇报频次是否下降。</p>
+<p>执行节奏：下周挑一个非核心任务做一次完整的授权练习。</p>
+<hr/>
+<p><strong>建议三：均匀管理关注度，看见那些还没被看见的人</strong></p>
+<p>团队反馈中的分化信号是本次测评最重要的发现之一。有成员在开放题里给出了非常详细、充满认可的正面反馈，也有成员觉得自己几乎没有被关注到，连一对一沟通都基本没有。你的支持型管理风格天然容易出现覆盖不均的问题：那些主动沟通、能力突出、你理解和认可的成员会获得更多的支持和资源，而那些相对沉默或者需要你主动去发现需求的成员，可能正处于被忽略的状态。</p>
+<p>行为动作：在回归后的第一个月内，确保跟每一位直接下属都完成至少一次一对一沟通。不只是问工作进展，更要问他们对自己未来半年发展方向的想法，以及他们觉得你可以怎么帮到他们。特别关注那些平时找你最少的人。</p>
+<p>观察信号：那些之前很少主动找你对齐的成员，是否在一对一之后开始有更多主动沟通？</p>
+<p>业务指标：团队内部的信息不对称导致的协调摩擦是否减少。</p>
+<p>执行节奏：本月内启动，每周至少安排一位。</p>
+<hr/>
+<h3>你的下一步行动</h3>
+<p>接下来两周，做两件事。</p>
+<p>第一件事，找你团队里那个你平时交流最少、了解最浅的成员，请他喝一次咖啡。不复盘项目，不布置任务，就聊一个问题：在你回来之前这段时间，他觉得最难的是什么，他希望你回来之后首先关注什么。这件事的意义在于，你不只是在重建在场感，你是在主动走向那个可能正在觉得自己不被看见的人。</p>
+<p>第二件事，回顾一下过去半年你在资源分配和任务安排上的决策，诚实地问自己一个问题：你的关注度和支持力度，在团队成员之间的分布是否均匀？如果有偏差，偏差的原因是什么？这个自我审视不需要结论，只需要觉察。觉察本身就是调整的起点。</p>
+<hr/>
+<h2>附录：指标定义说明</h2>
+<h3>四大维度类别</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">维度大类</th>
+<th style="text-align:left">包含维度</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">管理业务</td>
+<td style="text-align:left">专业能力、全局意识、优先级意识、果断决策、过程管理、总结复盘</td>
+<td style="text-align:left">聚焦业务目标达成与工作流程管控</td>
+</tr>
+<tr>
+<td style="text-align:left">管理团队</td>
+<td style="text-align:left">团队氛围、公正公平、知人善任、授权意识、及时反馈、换位思考/同理心、向下辅导、容错力</td>
+<td style="text-align:left">聚焦团队建设与人员发展</td>
+</tr>
+<tr>
+<td style="text-align:left">管理者综合素质</td>
+<td style="text-align:left">创新能力、学习能力、自省、影响力、沟通协调、情绪管理/抗压、榜样意识、目标感</td>
+<td style="text-align:left">聚焦管理者个人能力与领导力</td>
+</tr>
+<tr>
+<td style="text-align:left">价值观</td>
+<td style="text-align:left">简单开放、极致执行、自我驱动、拥抱变化、创业心态</td>
+<td style="text-align:left">聚焦与组织文化的契合度</td>
+</tr>
+</tbody>
+</table>
+<h3>四象限划分标准</h3>
+<ul>
+<li>排序口径：仅对同时具备自评与他评分数的维度进行排序</li>
+<li>高/低定义：Top 33% 为高，Bottom 33% 为低</li>
+<li>发展基础期：若他评最高分 &lt; 3.5，则四象限不落点，仅作基础能力提示</li>
+<li>优势共识区：自评高 + 他评高</li>
+<li>潜能区：自评相对低 + 他评高</li>
+<li>盲区：自评高 + 他评低</li>
+<li>待发展共识区：自评低 + 他评低</li>
+</ul>
+<h3>评分标准</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">分数</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:left">卓越：持续展现，是团队标杆</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:left">优秀：经常展现，超出期望</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:left">达标：基本展现，符合期望</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:left">待提升：偶尔展现，低于期望</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:left">不足：很少或从不展现</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<p><strong>报告说明</strong></p>
+<p>本报告基于 2025 年度管理者自评及团队成员匿名他评，剔除1份无效数据后基于3份有效他评进行分析，并在具备历史基线时提供三年对比信息。所有数据均经过统一处理，确保反馈的客观性和一致性。</p>
+<p>如对报告内容有任何疑问，请联系人力行政部-学习发展。</p>
+<hr/>
+<p><em>本报告由人力行政部-学习发展出品</em>
+<em>2026 年 3 月</em></p>
+<hr/>
+
+      
+    <section class="quote-end" aria-label="Leadership Quote">
+      <blockquote>
+        <p class="quote-en">"Leadership is not about being in charge. It is about taking care of those in your charge."</p>
+        <p class="quote-zh">"领导力不在于你是否'大权在握'，而在于你是否'照看'好了那些你权责范围内的人。"</p>
+        <p class="quote-by">—— Simon Sinek</p>
+      </blockquote>
+    </section>
+    
+    </section>
+  </main>
+</body>
+</html>
