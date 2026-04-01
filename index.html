@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Surfin 管理者测评报告库</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf9f7;
+  --bg-warm: #f5f3ef;
+  --surface: #ffffff;
+  --ink: #1a1d23;
+  --ink-2: #3d4350;
+  --muted: #8b93a3;
+  --muted-light: #b0b6c3;
+  --primary: #1c2a3a;
+  --accent: #b8964a;
+  --accent-soft: rgba(184,150,74,.08);
+  --accent-line: rgba(184,150,74,.25);
+  --line: #eaebed;
+  --line-soft: #f0f0f2;
+  --ok: #2d8f6f;
+  --ok-bg: #eaf6f1;
+  --warn: #c48a1a;
+  --warn-bg: #fdf5e6;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.03), 0 4px 12px rgba(0,0,0,.02);
+  --shadow-md: 0 2px 8px rgba(0,0,0,.04), 0 8px 28px rgba(0,0,0,.04);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,.05), 0 16px 48px rgba(0,0,0,.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Noto Sans SC","Inter","PingFang SC",system-ui,sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(45,143,111,.35); }
+  50% { box-shadow: 0 0 0 6px rgba(45,143,111,0); }
+}
+
+/* ====== PASSWORD GATE ====== */
+#gate {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg-warm);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity .6s cubic-bezier(.22,1,.36,1), visibility .6s;
+}
+#gate.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.gate-card {
+  text-align: center;
+  width: min(400px, 88vw);
+  animation: fadeUp .6s cubic-bezier(.22,1,.36,1) forwards;
+}
+.gate-logo {
+  width: 52px; height: 52px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 32px;
+  background: var(--surface);
+}
+.gate-logo svg { width: 22px; height: 22px; }
+.gate-card h1 {
+  font-family: "Noto Serif SC",serif;
+  font-size: 24px; font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 6px;
+  letter-spacing: -.01em;
+}
+.gate-card .subtitle {
+  font-size: 13px; color: var(--muted);
+  margin-bottom: 40px;
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+}
+.gate-input-group {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 6px;
+  display: flex;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color .25s, box-shadow .25s;
+}
+.gate-input-group:focus-within {
+  border-color: var(--accent-line);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.gate-input-group input {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  font-size: 15px;
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+  outline: none;
+  background: transparent;
+  letter-spacing: .12em;
+  text-align: center;
+  min-width: 0;
+}
+.gate-input-group input::placeholder { letter-spacing: normal; color: #c8ccd4; }
+.gate-submit {
+  padding: 12px 28px;
+  background: var(--primary);
+  color: #fff;
+  border: none; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, transform .12s;
+  font-family: "Noto Sans SC",sans-serif;
+  white-space: nowrap;
+}
+.gate-submit:hover { background: #263b50; }
+.gate-submit:active { transform: scale(.97); }
+.gate-error {
+  color: #c0392b; font-size: 13px;
+  margin-top: 14px; opacity: 0;
+  transition: opacity .3s;
+}
+.gate-error.show { opacity: 1; }
+.gate-footer {
+  margin-top: 48px;
+  font-size: 11px; color: #c8ccd4;
+  font-family: "DM Sans",sans-serif;
+  letter-spacing: .04em;
+}
+
+/* ====== HEADER ====== */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,249,247,.85);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-brand {
+  display: flex; align-items: center; gap: 12px;
+}
+.header-brand .mark {
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--line);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface);
+}
+.header-brand .mark svg { width: 15px; height: 15px; }
+.header-brand span {
+  font-weight: 700; font-size: 14px;
+  color: var(--primary);
+  letter-spacing: .01em;
+}
+.header-meta {
+  font-family: "DM Sans",sans-serif;
+  font-size: 11px;
+  color: var(--muted-light);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* ====== HERO ====== */
+.hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 40px 20px;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 28px;
+}
+.hero-eyebrow .live-dot {
+  width: 7px; height: 7px;
+  background: var(--ok);
+  border-radius: 50%;
+  animation: pulseGlow 2.5s infinite;
+}
+.hero-eyebrow span {
+  font-size: 13px; font-weight: 600;
+  color: var(--ok);
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+}
+
+.hero h2 {
+  font-family: "Noto Serif SC",serif;
+  font-size: 52px; font-weight: 900;
+  color: var(--primary);
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  margin-bottom: 36px;
+  white-space: nowrap;
+}
+
+.hero-body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+  margin-bottom: 56px;
+}
+.hero .desc {
+  font-size: 15px;
+  color: var(--ink-2);
+  max-width: 480px;
+  line-height: 1.9;
+  flex-shrink: 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.stat-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 24px;
+  min-width: 140px;
+  box-shadow: var(--shadow-sm);
+}
+.stat-block .num {
+  font-family: "DM Sans",sans-serif;
+  font-size: 28px; font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+  margin-bottom: 3px;
+}
+.stat-block .label {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+}
+
+/* ====== YEAR SECTION ====== */
+.content-area {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.section-head h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.section-head .divider {
+  flex: 1; height: 1px;
+  background: var(--line);
+}
+
+.year-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.year-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px 24px 22px;
+  cursor: pointer;
+  transition: all .28s cubic-bezier(.22,1,.36,1);
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.year-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+  border-color: var(--accent-line);
+}
+
+.year-card .year-num {
+  font-family: "DM Sans",sans-serif;
+  font-size: 40px; font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -.02em;
+}
+.year-card .year-cycle {
+  font-size: 13px; color: var(--ink-2);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.year-card .year-info {
+  display: flex; flex-direction: column; gap: 5px;
+  font-size: 13px;
+}
+.year-card .info-row {
+  display: flex; align-items: center; gap: 8px;
+  color: var(--ink-2);
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-dot.live { background: var(--ok); }
+.status-dot.pending { background: var(--warn); }
+.status-dot.off { background: #d0d3d9; }
+
+.year-card .tag-latest {
+  position: absolute;
+  top: 16px; right: 16px;
+  font-family: "DM Sans",sans-serif;
+  font-size: 10px; font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.year-card.current {
+  border-color: var(--accent-line);
+}
+
+.year-card.upcoming {
+  opacity: .4;
+  cursor: default;
+  border-style: dashed;
+}
+.year-card.upcoming:hover {
+  box-shadow: none; transform: none; border-color: var(--line);
+}
+
+/* ====== DETAIL VIEW ====== */
+#detail-2025 { display: none; }
+#detail-2025.active { display: block; animation: fadeIn .35s ease; }
+#home-view.hidden { display: none; }
+
+.back-nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 40px 0;
+}
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--muted);
+  cursor: pointer;
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+  font-weight: 500;
+  background: none; border: none;
+  transition: color .2s;
+}
+.back-btn:hover { color: var(--primary); }
+.back-btn svg { width: 16px; height: 16px; }
+
+.detail-hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 40px 44px;
+}
+.detail-hero h2 {
+  font-family: "Noto Serif SC",serif;
+  font-size: 36px; font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 14px;
+  letter-spacing: -.01em;
+}
+.meta-pills {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.meta-pill {
+  background: var(--bg-warm);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: var(--ink-2);
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+  font-weight: 500;
+}
+
+/* Team Banner */
+.team-banner {
+  max-width: 1200px;
+  margin: 0 auto 12px;
+  padding: 0 40px;
+}
+.team-banner-inner {
+  background: var(--primary);
+  border-radius: var(--radius);
+  padding: 22px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all .28s cubic-bezier(.22,1,.36,1);
+}
+.team-banner-inner:hover {
+  box-shadow: 0 8px 28px rgba(28,42,58,.18);
+  transform: translateY(-2px);
+}
+.team-banner-left {
+  display: flex; align-items: center; gap: 16px;
+}
+.team-icon {
+  width: 42px; height: 42px;
+  background: rgba(255,255,255,.1);
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.team-icon svg { width: 20px; height: 20px; color: rgba(255,255,255,.7); }
+.team-banner-text h3 {
+  font-size: 15px; font-weight: 700;
+  color: #fff;
+  margin-bottom: 1px;
+}
+.team-banner-text p {
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+}
+.team-arrow {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,.08);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+.team-banner-inner:hover .team-arrow { background: rgba(255,255,255,.15); }
+.team-arrow svg { width: 16px; height: 16px; color: rgba(255,255,255,.6); }
+
+/* Manager Section */
+.detail-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 40px 80px;
+}
+
+.group-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px;
+  margin-top: 32px;
+}
+.group-header:first-child { margin-top: 0; }
+.group-badge {
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+  font-size: 12px; font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 7px;
+  white-space: nowrap;
+}
+.group-badge.y3 { background: var(--ok-bg); color: var(--ok); }
+.group-badge.y2 { background: #e8f0fe; color: #1558b0; }
+.group-badge.y1 { background: var(--warn-bg); color: var(--warn); }
+.group-line { flex: 1; height: 1px; background: var(--line); }
+.group-count {
+  font-size: 12px; color: var(--muted);
+  font-family: "DM Sans",sans-serif;
+  font-weight: 500;
+}
+
+.manager-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.manager-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 18px;
+  cursor: pointer;
+  transition: all .28s cubic-bezier(.22,1,.36,1);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.manager-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--accent-line);
+}
+
+.avatar {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Noto Serif SC",serif;
+  font-size: 17px; font-weight: 700;
+  flex-shrink: 0;
+  color: #fff;
+}
+.avatar.y3 { background: linear-gradient(135deg, #2d8f6f, #3aab85); }
+.avatar.y2 { background: linear-gradient(135deg, #1558b0, #2d78d8); }
+.avatar.y1 { background: linear-gradient(135deg, #c48a1a, #daa035); }
+
+.card-info { flex: 1; min-width: 0; }
+.card-info .name {
+  font-size: 15px; font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+.card-info .dept {
+  font-size: 12px; color: var(--muted);
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+  line-height: 1.4;
+}
+.card-loc {
+  font-size: 11px;
+  color: var(--muted-light);
+  font-family: "DM Sans",sans-serif;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* ====== FOOTER ====== */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 40px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted-light);
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 1080px) {
+  .hero h2 { font-size: 42px; white-space: normal; }
+}
+@media (max-width: 900px) {
+  .year-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero h2 { font-size: 36px; white-space: normal; }
+  .hero-body { flex-direction: column; gap: 28px; }
+  .stats-grid { width: 100%; }
+}
+@media (max-width: 640px) {
+  .hero { padding: 40px 24px 16px; }
+  .hero h2 { font-size: 28px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-block { padding: 14px 16px; min-width: 0; }
+  .year-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .year-card .year-num { font-size: 30px; }
+  .year-card { padding: 20px 18px 18px; }
+  .header-inner { padding: 12px 20px; }
+  .header-meta { display: none; }
+  .content-area, .detail-content, .team-banner, .back-nav { padding-left: 20px; padding-right: 20px; }
+  .detail-hero { padding: 28px 20px 36px; }
+  .detail-hero h2 { font-size: 26px; }
+  .manager-grid { grid-template-columns: 1fr; }
+  .gate-card { width: 88vw; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== PASSWORD GATE ===== -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#b8964a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <h1>管理者测评报告库</h1>
+    <p class="subtitle">Surfin People & Organization Development</p>
+    <div class="gate-input-group">
+      <input type="password" id="gate-pw" placeholder="请输入访问密码" autofocus
+        onkeydown="if(event.key==='Enter')checkGate()"/>
+      <button class="gate-submit" onclick="checkGate()">进入</button>
+    </div>
+    <p class="gate-error" id="gate-err">密码不正确，请联系 L&D 团队获取</p>
+    <p class="gate-footer">Internal Access Only</p>
+  </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#b8964a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span>管理者测评报告库</span>
+    </div>
+    <div class="header-meta">People & Organization Development</div>
+  </div>
+</header>
+
+<!-- ===== HOME ===== -->
+<div id="home-view">
+
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span class="live-dot"></span>
+      <span>2025 年度报告已上线</span>
+    </div>
+    <h2>Surfin 基层管理者测评反馈报告库</h2>
+    <div class="hero-body">
+      <p class="desc">
+        持续追踪基层管理梯队的成长轨迹。每年通过自评与下属评价，为每位管理者生成个人反馈报告，帮助管理者看见自己的管理画像，也为组织积累可追溯的人才发展数据。
+      </p>
+      <div class="stats-grid">
+        <div class="stat-block">
+          <div class="num">4</div>
+          <div class="label">测评年度</div>
+        </div>
+        <div class="stat-block">
+          <div class="num">20</div>
+          <div class="label">2025 参评者</div>
+        </div>
+        <div class="stat-block">
+          <div class="num">4</div>
+          <div class="label">覆盖部门</div>
+        </div>
+        <div class="stat-block">
+          <div class="num">155</div>
+          <div class="label">评价人次</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="content-area">
+    <div class="section-head">
+      <h3>按年度浏览</h3>
+      <span class="divider"></span>
+    </div>
+
+    <div class="year-grid">
+      <a class="year-card current" onclick="showDetail('2025')">
+        <span class="tag-latest">Latest</span>
+        <div class="year-num">2025</div>
+        <div class="year-cycle">第三轮测评周期</div>
+        <div class="year-info">
+          <div class="info-row"><span class="status-dot live"></span>20 位管理者</div>
+          <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
+        </div>
+      </a>
+      <a class="year-card" onclick="showDetail('2024')">
+        <div class="year-num">2024</div>
+        <div class="year-cycle">第二轮测评周期</div>
+        <div class="year-info">
+          <div class="info-row"><span class="status-dot pending"></span>14 位管理者</div>
+          <div class="info-row"><span class="status-dot pending"></span>报告待补录</div>
+        </div>
+      </a>
+      <a class="year-card" onclick="showDetail('2023')">
+        <div class="year-num">2023</div>
+        <div class="year-cycle">首轮测评周期</div>
+        <div class="year-info">
+          <div class="info-row"><span class="status-dot pending"></span>7 位管理者</div>
+          <div class="info-row"><span class="status-dot pending"></span>报告待补录</div>
+        </div>
+      </a>
+      <div class="year-card upcoming">
+        <div class="year-num" style="color:#c8ccd4">2026</div>
+        <div class="year-cycle" style="color:#c0c4cc">下一轮测评</div>
+        <div class="year-info">
+          <div class="info-row" style="color:#c0c4cc"><span class="status-dot off"></span>待启动</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== 2025 DETAIL ===== -->
+<div id="detail-2025">
+
+  <nav class="back-nav">
+    <button class="back-btn" onclick="goHome()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      返回年度总览
+    </button>
+  </nav>
+
+  <section class="detail-hero">
+    <h2>2025 基层管理者测评</h2>
+    <div class="meta-pills">
+      <span class="meta-pill">第三轮测评周期</span>
+      <span class="meta-pill">20 位管理者</span>
+      <span class="meta-pill">155 位下属参评</span>
+      <span class="meta-pill">4 个一级部门</span>
+    </div>
+  </section>
+
+  <div class="team-banner">
+    <div class="team-banner-inner" onclick="window.open('reports/2025/团队反馈报告.pdf','_blank')">
+      <div class="team-banner-left">
+        <div class="team-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="team-banner-text">
+          <h3>2025 团队共性分析报告</h3>
+          <p>基层管理梯队整体画像与趋势洞察</p>
+        </div>
+      </div>
+      <div class="team-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-content">
+
+    <!-- 第三年 -->
+    <div class="group-header">
+      <span class="group-badge y3">第三年参评</span>
+      <span class="group-line"></span>
+      <span class="group-count">7 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card" onclick="openReport('赵汉洋')">
+        <div class="avatar y3">赵</div>
+        <div class="card-info"><div class="name">赵汉洋</div><div class="dept">风险管理中心 / 大数据部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport('刘天益')">
+        <div class="avatar y3">刘</div>
+        <div class="card-info"><div class="name">刘天益</div><div class="dept">风险管理中心 / 特征开发部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport('姚亚坤')">
+        <div class="avatar y3">姚</div>
+        <div class="card-info"><div class="name">姚亚坤</div><div class="dept">技术中心 / 支付组</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport('唐必洪')">
+        <div class="avatar y3">唐</div>
+        <div class="card-info"><div class="name">唐必洪</div><div class="dept">技术中心 / 智慧财富支持部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport('李晓铮')">
+        <div class="avatar y3">李</div>
+        <div class="card-info"><div class="name">李晓铮</div><div class="dept">技术中心 / 信用卡组</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport('张自富')">
+        <div class="avatar y3">张</div>
+        <div class="card-info"><div class="name">张自富</div><div class="dept">技术中心 / 基础架构部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport('魏丽惠')">
+        <div class="avatar y3">魏</div>
+        <div class="card-info"><div class="name">魏丽惠</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+    </div>
+
+    <!-- 第二年 -->
+    <div class="group-header">
+      <span class="group-badge y2">第二年参评</span>
+      <span class="group-line"></span>
+      <span class="group-count">7 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card" onclick="openReport('杨蕊')">
+        <div class="avatar y2">杨</div>
+        <div class="card-info"><div class="name">杨蕊</div><div class="dept">财务部 / 核算组</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport('王尚程')">
+        <div class="avatar y2">王</div>
+        <div class="card-info"><div class="name">王尚程</div><div class="dept">风险管理中心 / 上海分部</div></div>
+        <span class="card-loc">上海</span>
+      </a>
+      <a class="manager-card" onclick="openReport('孙丰')">
+        <div class="avatar y2">孙</div>
+        <div class="card-info"><div class="name">孙丰</div><div class="dept">产品运营部 / 武汉产品组</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport('李帅')">
+        <div class="avatar y2">李</div>
+        <div class="card-info"><div class="name">李帅</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport('饶鹏达')">
+        <div class="avatar y2">饶</div>
+        <div class="card-info"><div class="name">饶鹏达</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport('聂舜')">
+        <div class="avatar y2">聂</div>
+        <div class="card-info"><div class="name">聂舜</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport('安俊')">
+        <div class="avatar y2">安</div>
+        <div class="card-info"><div class="name">安俊</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+    </div>
+
+    <!-- 首次 -->
+    <div class="group-header">
+      <span class="group-badge y1">首次参评</span>
+      <span class="group-line"></span>
+      <span class="group-count">6 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card" onclick="openReport('刘晨晨')">
+        <div class="avatar y1">刘</div>
+        <div class="card-info"><div class="name">刘晨晨</div><div class="dept">风险管理中心 / 风险策略部-B</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport('何霄鹏')">
+        <div class="avatar y1">何</div>
+        <div class="card-info"><div class="name">何霄鹏</div><div class="dept">技术中心 / to B</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport('程双双')">
+        <div class="avatar y1">程</div>
+        <div class="card-info"><div class="name">程双双</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport('韩军昌')">
+        <div class="avatar y1">韩</div>
+        <div class="card-info"><div class="name">韩军昌</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport('徐选伟')">
+        <div class="avatar y1">徐</div>
+        <div class="card-info"><div class="name">徐选伟</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport('曾德传')">
+        <div class="avatar y1">曾</div>
+        <div class="card-info"><div class="name">曾德传</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">海口</span>
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  Surfin People & Organization Development &middot; Internal Use Only &middot; 2023 &ndash; 2026
+</footer>
+
+<script>
+function openReport(name) {
+  window.open('reports/2025/' + name + '.html', '_blank');
+}
+function checkGate() {
+  const pw = document.getElementById('gate-pw').value;
+  if (pw === 'surfin2025') {
+    document.getElementById('gate').classList.add('hidden');
+  } else {
+    document.getElementById('gate-err').classList.add('show');
+    setTimeout(() => document.getElementById('gate-err').classList.remove('show'), 2500);
+  }
+}
+function showDetail(year) {
+  if (year === '2025') {
+    document.getElementById('home-view').classList.add('hidden');
+    document.getElementById('detail-2025').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+}
+function goHome() {
+  document.getElementById('home-view').classList.remove('hidden');
+  document.getElementById('detail-2025').classList.remove('active');
+  window.scrollTo(0, 0);
+}
+</script>
+
+</body>
+</html>
