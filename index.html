@@ -366,8 +366,8 @@ body {
 }
 
 /* ====== DETAIL VIEW ====== */
-#detail-2025 { display: none; }
-#detail-2025.active { display: block; animation: fadeIn .35s ease; }
+#detail-2025, #detail-2024 { display: none; }
+#detail-2025.active, #detail-2024.active { display: block; animation: fadeIn .35s ease; }
 #home-view.hidden { display: none; }
 
 .back-nav {
@@ -683,8 +683,8 @@ body {
         <div class="year-num">2024</div>
         <div class="year-cycle">第二轮测评周期</div>
         <div class="year-info">
-          <div class="info-row"><span class="status-dot pending"></span>14 位管理者</div>
-          <div class="info-row"><span class="status-dot pending"></span>报告待补录</div>
+          <div class="info-row"><span class="status-dot live"></span>20 位管理者</div>
+          <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
         </div>
       </a>
       <a class="year-card" onclick="showDetail('2023')">
@@ -879,6 +879,159 @@ body {
 
 </div>
 
+<!-- ===== 2024 DETAIL ===== -->
+<div id="detail-2024">
+
+  <nav class="back-nav">
+    <button class="back-btn" onclick="goHome()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      返回年度总览
+    </button>
+  </nav>
+
+  <section class="detail-hero">
+    <h2>2024 基层管理者测评</h2>
+    <div class="meta-pills">
+      <span class="meta-pill">第二轮测评周期</span>
+      <span class="meta-pill">20 位管理者</span>
+      <span class="meta-pill">4 个一级部门</span>
+      <span class="meta-pill">PDF 报告</span>
+    </div>
+  </section>
+
+  <div class="detail-content">
+
+    <!-- 第三年 -->
+    <div class="group-header">
+      <span class="group-badge y3">第三年参评</span>
+      <span class="group-line"></span>
+      <span class="group-count">7 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card" onclick="openReport2024('刘天益')">
+        <div class="avatar y3">刘</div>
+        <div class="card-info"><div class="name">刘天益</div><div class="dept">风险管理中心 / 特征开发部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('李晓铮')">
+        <div class="avatar y3">李</div>
+        <div class="card-info"><div class="name">李晓铮</div><div class="dept">技术中心 / 信用卡部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('唐必洪')">
+        <div class="avatar y3">唐</div>
+        <div class="card-info"><div class="name">唐必洪</div><div class="dept">技术中心 / 智慧财富部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('姚亚坤')">
+        <div class="avatar y3">姚</div>
+        <div class="card-info"><div class="name">姚亚坤</div><div class="dept">技术中心 / 支付部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('李瑞强')">
+        <div class="avatar y3">李</div>
+        <div class="card-info"><div class="name">李瑞强</div><div class="dept">技术中心 / 智慧信贷部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('张自富')">
+        <div class="avatar y3">张</div>
+        <div class="card-info"><div class="name">张自富</div><div class="dept">技术中心 / 基础架构部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('魏丽惠')">
+        <div class="avatar y3">魏</div>
+        <div class="card-info"><div class="name">魏丽惠</div><div class="dept">技术中心 / 智慧信贷部-QA</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+    </div>
+
+    <!-- 第二年 -->
+    <div class="group-header">
+      <span class="group-badge y2">第二年参评</span>
+      <span class="group-line"></span>
+      <span class="group-count">3 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card" onclick="openReport2024('赵汉洋')">
+        <div class="avatar y2">赵</div>
+        <div class="card-info"><div class="name">赵汉洋</div><div class="dept">风险管理中心 / 大数据部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('董怡雪')">
+        <div class="avatar y2">董</div>
+        <div class="card-info"><div class="name">董怡雪</div><div class="dept">技术中心 / QA</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('高忠强')">
+        <div class="avatar y2">高</div>
+        <div class="card-info"><div class="name">高忠强</div><div class="dept">技术中心 / 智慧信贷部</div></div>
+        <span class="card-loc">海口</span>
+      </a>
+    </div>
+
+    <!-- 首次 -->
+    <div class="group-header">
+      <span class="group-badge y1">首次参评</span>
+      <span class="group-line"></span>
+      <span class="group-count">10 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card" onclick="openReport2024('杨蕊')">
+        <div class="avatar y1">杨</div>
+        <div class="card-info"><div class="name">杨蕊</div><div class="dept">财务部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('王尚程')">
+        <div class="avatar y1">王</div>
+        <div class="card-info"><div class="name">王尚程</div><div class="dept">风险管理中心</div></div>
+        <span class="card-loc">上海</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('刘宇鹏')">
+        <div class="avatar y1">刘</div>
+        <div class="card-info"><div class="name">刘宇鹏</div><div class="dept">风险管理中心 / 风险策略部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('孙丰')">
+        <div class="avatar y1">孙</div>
+        <div class="card-info"><div class="name">孙丰</div><div class="dept">产品运营部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('吕亚楠')">
+        <div class="avatar y1">吕</div>
+        <div class="card-info"><div class="name">吕亚楠</div><div class="dept">产品运营部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('王雅平')">
+        <div class="avatar y1">王</div>
+        <div class="card-info"><div class="name">王雅平</div><div class="dept">产品运营部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('李帅')">
+        <div class="avatar y1">李</div>
+        <div class="card-info"><div class="name">李帅</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('饶鹏达')">
+        <div class="avatar y1">饶</div>
+        <div class="card-info"><div class="name">饶鹏达</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('聂舜')">
+        <div class="avatar y1">聂</div>
+        <div class="card-info"><div class="name">聂舜</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+      <a class="manager-card" onclick="openReport2024('安俊')">
+        <div class="avatar y1">安</div>
+        <div class="card-info"><div class="name">安俊</div><div class="dept">技术中心 / 信贷支持部</div></div>
+        <span class="card-loc">武汉</span>
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer class="site-footer">
   Surfin People & Organization Development &middot; Internal Use Only &middot; 2023 &ndash; 2026
@@ -887,6 +1040,9 @@ body {
 <script>
 function openReport(name) {
   window.open('reports/2025/' + name + '.html', '_blank');
+}
+function openReport2024(name) {
+  window.open('reports/2024/' + name + '.pdf', '_blank');
 }
 function checkGate() {
   const pw = document.getElementById('gate-pw').value;
@@ -898,15 +1054,17 @@ function checkGate() {
   }
 }
 function showDetail(year) {
-  if (year === '2025') {
+  var el = document.getElementById('detail-' + year);
+  if (el) {
     document.getElementById('home-view').classList.add('hidden');
-    document.getElementById('detail-2025').classList.add('active');
+    el.classList.add('active');
     window.scrollTo(0, 0);
   }
 }
 function goHome() {
   document.getElementById('home-view').classList.remove('hidden');
   document.getElementById('detail-2025').classList.remove('active');
+  document.getElementById('detail-2024').classList.remove('active');
   window.scrollTo(0, 0);
 }
 </script>
