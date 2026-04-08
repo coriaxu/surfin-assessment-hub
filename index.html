@@ -285,9 +285,14 @@ body {
   background: var(--line);
 }
 
+.year-layout {
+  display: grid;
+  gap: 14px;
+}
+
 .year-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
 
@@ -356,13 +361,41 @@ body {
   border-color: var(--accent-line);
 }
 
-.year-card.upcoming {
-  opacity: .4;
+.year-card.pending {
   cursor: default;
   border-style: dashed;
 }
+.year-card.pending:hover {
+  box-shadow: none;
+  transform: none;
+  border-color: var(--line);
+}
+
+.year-card.upcoming {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 22px;
+  cursor: default;
+  border-style: dashed;
+  background: var(--bg-warm);
+}
 .year-card.upcoming:hover {
   box-shadow: none; transform: none; border-color: var(--line);
+}
+.year-card.upcoming .year-num {
+  color: #9da3ad;
+  font-size: 30px;
+  margin-bottom: 0;
+}
+.year-card.upcoming .year-cycle {
+  color: var(--muted);
+  margin-bottom: 0;
+}
+.year-card.upcoming .year-info {
+  align-items: flex-end;
+  color: var(--muted);
 }
 
 /* ====== DETAIL VIEW ====== */
@@ -569,7 +602,7 @@ body {
   .hero h2 { font-size: 42px; white-space: normal; }
 }
 @media (max-width: 900px) {
-  .year-grid { grid-template-columns: repeat(2, 1fr); }
+  .year-grid { grid-template-columns: repeat(3, 1fr); }
   .hero h2 { font-size: 36px; white-space: normal; }
   .hero-body { flex-direction: column; gap: 28px; }
   .stats-grid { width: 100%; }
@@ -579,9 +612,11 @@ body {
   .hero h2 { font-size: 28px; }
   .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
   .stat-block { padding: 14px 16px; min-width: 0; }
-  .year-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .year-grid { grid-template-columns: 1fr; gap: 10px; }
   .year-card .year-num { font-size: 30px; }
   .year-card { padding: 20px 18px 18px; }
+  .year-card.upcoming { align-items: flex-start; flex-direction: column; }
+  .year-card.upcoming .year-info { align-items: flex-start; }
   .header-inner { padding: 12px 20px; }
   .header-meta { display: none; }
   .content-area, .detail-content, .team-banner, .back-nav { padding-left: 20px; padding-right: 20px; }
@@ -644,8 +679,8 @@ body {
       </p>
       <div class="stats-grid">
         <div class="stat-block">
-          <div class="num">4</div>
-          <div class="label">测评年度</div>
+          <div class="num">3</div>
+          <div class="label">已发生测评年度</div>
         </div>
         <div class="stat-block">
           <div class="num">20</div>
@@ -669,37 +704,41 @@ body {
       <span class="divider"></span>
     </div>
 
-    <div class="year-grid">
-      <a class="year-card current" onclick="showDetail('2025')">
-        <span class="tag-latest">Latest</span>
-        <div class="year-num">2025</div>
-        <div class="year-cycle">第三轮测评周期</div>
-        <div class="year-info">
-          <div class="info-row"><span class="status-dot live"></span>20 位管理者</div>
-          <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
+    <div class="year-layout">
+      <div class="year-grid">
+        <a class="year-card current" onclick="showDetail('2025')">
+          <span class="tag-latest">Latest</span>
+          <div class="year-num">2025</div>
+          <div class="year-cycle">第三轮测评周期</div>
+          <div class="year-info">
+            <div class="info-row"><span class="status-dot live"></span>20 位管理者</div>
+            <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
+          </div>
+        </a>
+        <a class="year-card" onclick="showDetail('2024')">
+          <div class="year-num">2024</div>
+          <div class="year-cycle">第二轮测评周期</div>
+          <div class="year-info">
+            <div class="info-row"><span class="status-dot live"></span>20 位管理者</div>
+            <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
+          </div>
+        </a>
+        <div class="year-card pending">
+          <div class="year-num">2023</div>
+          <div class="year-cycle">首轮测评周期</div>
+          <div class="year-info">
+            <div class="info-row"><span class="status-dot pending"></span>7 位管理者</div>
+            <div class="info-row"><span class="status-dot pending"></span>报告待补录</div>
+          </div>
         </div>
-      </a>
-      <a class="year-card" onclick="showDetail('2024')">
-        <div class="year-num">2024</div>
-        <div class="year-cycle">第二轮测评周期</div>
-        <div class="year-info">
-          <div class="info-row"><span class="status-dot live"></span>20 位管理者</div>
-          <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
-        </div>
-      </a>
-      <a class="year-card" onclick="showDetail('2023')">
-        <div class="year-num">2023</div>
-        <div class="year-cycle">首轮测评周期</div>
-        <div class="year-info">
-          <div class="info-row"><span class="status-dot pending"></span>7 位管理者</div>
-          <div class="info-row"><span class="status-dot pending"></span>报告待补录</div>
-        </div>
-      </a>
+      </div>
       <div class="year-card upcoming">
-        <div class="year-num" style="color:#c8ccd4">2026</div>
-        <div class="year-cycle" style="color:#c0c4cc">下一轮测评</div>
+        <div>
+          <div class="year-num">2026</div>
+          <div class="year-cycle">下一轮测评</div>
+        </div>
         <div class="year-info">
-          <div class="info-row" style="color:#c0c4cc"><span class="status-dot off"></span>待启动</div>
+          <div class="info-row"><span class="status-dot off"></span>未启动，不计入当前统计</div>
         </div>
       </div>
     </div>
@@ -1034,7 +1073,7 @@ body {
 
 <!-- ===== FOOTER ===== -->
 <footer class="site-footer">
-  Surfin People & Organization Development &middot; Internal Use Only &middot; 2023 &ndash; 2026
+  Surfin People & Organization Development &middot; Internal Use Only &middot; 2023 &ndash; 2025
 </footer>
 
 <script>
