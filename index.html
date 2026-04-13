@@ -1292,16 +1292,26 @@ function checkGate() {
   const pw = document.getElementById('gate-pw').value;
   if (pw === 'surfin2025') {
     document.getElementById('gate').classList.add('hidden');
+    openRequestedYear();
   } else {
     document.getElementById('gate-err').classList.add('show');
     setTimeout(() => document.getElementById('gate-err').classList.remove('show'), 2500);
   }
+}
+function getRequestedYear() {
+  var year = window.location.hash.replace('#', '');
+  return /^(2023|2024|2025)$/.test(year) ? year : null;
+}
+function openRequestedYear() {
+  var year = getRequestedYear();
+  if (year) showDetail(year);
 }
 function showDetail(year) {
   var el = document.getElementById('detail-' + year);
   if (el) {
     document.getElementById('home-view').classList.add('hidden');
     el.classList.add('active');
+    if (history.replaceState) history.replaceState(null, '', '#' + year);
     window.scrollTo(0, 0);
   }
 }
@@ -1310,6 +1320,7 @@ function goHome() {
   document.getElementById('detail-2025').classList.remove('active');
   document.getElementById('detail-2024').classList.remove('active');
   document.getElementById('detail-2023').classList.remove('active');
+  if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
   window.scrollTo(0, 0);
 }
 </script>
