@@ -399,8 +399,8 @@ body {
 }
 
 /* ====== DETAIL VIEW ====== */
-#detail-2025, #detail-2024, #detail-2023 { display: none; }
-#detail-2025.active, #detail-2024.active, #detail-2023.active { display: block; animation: fadeIn .35s ease; }
+#detail-2025, #detail-2024, #detail-2023, #detail-2022 { display: none; }
+#detail-2025.active, #detail-2024.active, #detail-2023.active, #detail-2022.active { display: block; animation: fadeIn .35s ease; }
 #home-view.hidden { display: none; }
 
 .back-nav {
@@ -679,7 +679,7 @@ body {
       </p>
       <div class="stats-grid">
         <div class="stat-block">
-          <div class="num">3</div>
+          <div class="num">4</div>
           <div class="label">已发生测评年度</div>
         </div>
         <div class="stat-block">
@@ -709,7 +709,7 @@ body {
         <a class="year-card current" onclick="showDetail('2025')">
           <span class="tag-latest">Latest</span>
           <div class="year-num">2025</div>
-          <div class="year-cycle">第三轮测评周期</div>
+          <div class="year-cycle">2025 年度测评</div>
           <div class="year-info">
             <div class="info-row"><span class="status-dot live"></span>20 位管理者</div>
             <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
@@ -717,7 +717,7 @@ body {
         </a>
         <a class="year-card" onclick="showDetail('2024')">
           <div class="year-num">2024</div>
-          <div class="year-cycle">第二轮测评周期</div>
+          <div class="year-cycle">2024 年度测评</div>
           <div class="year-info">
             <div class="info-row"><span class="status-dot live"></span>20 位管理者</div>
             <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
@@ -725,9 +725,17 @@ body {
         </a>
         <a class="year-card" onclick="showDetail('2023')">
           <div class="year-num">2023</div>
-          <div class="year-cycle">首轮测评周期</div>
+          <div class="year-cycle">2023 年度测评</div>
           <div class="year-info">
             <div class="info-row"><span class="status-dot live"></span>26 位管理者</div>
+            <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
+          </div>
+        </a>
+        <a class="year-card" onclick="showDetail('2022')">
+          <div class="year-num">2022</div>
+          <div class="year-cycle">中层管理者测评</div>
+          <div class="year-info">
+            <div class="info-row"><span class="status-dot live"></span>7 位管理者</div>
             <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
           </div>
         </a>
@@ -759,7 +767,7 @@ body {
   <section class="detail-hero">
     <h2>2025 基层管理者测评</h2>
     <div class="meta-pills">
-      <span class="meta-pill">第三轮测评周期</span>
+      <span class="meta-pill">2025 年度测评</span>
       <span class="meta-pill">20 位管理者</span>
       <span class="meta-pill">155 位下属参评</span>
       <span class="meta-pill">4 个一级部门</span>
@@ -931,7 +939,7 @@ body {
   <section class="detail-hero">
     <h2>2024 基层管理者测评</h2>
     <div class="meta-pills">
-      <span class="meta-pill">第二轮测评周期</span>
+      <span class="meta-pill">2024 年度测评</span>
       <span class="meta-pill">20 位管理者</span>
       <span class="meta-pill">4 个一级部门</span>
       <span class="meta-pill">PDF 报告</span>
@@ -1084,7 +1092,7 @@ body {
   <section class="detail-hero">
     <h2>2023 管理者测评</h2>
     <div class="meta-pills">
-      <span class="meta-pill">首轮测评周期</span>
+      <span class="meta-pill">2023 年度测评</span>
       <span class="meta-pill">26 位管理者</span>
       <span class="meta-pill">3 个管理层级</span>
       <span class="meta-pill">PDF 报告</span>
@@ -1273,9 +1281,78 @@ body {
 
 </div>
 
+<!-- ===== 2022 DETAIL ===== -->
+<div id="detail-2022">
+
+  <nav class="back-nav">
+    <button class="back-btn" onclick="goHome()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      返回年度总览
+    </button>
+  </nav>
+
+  <section class="detail-hero">
+    <h2>2022 年中层管理者测评</h2>
+    <div class="meta-pills">
+      <span class="meta-pill">2022-23 年度测评</span>
+      <span class="meta-pill">7 位管理者</span>
+      <span class="meta-pill">中层管理者</span>
+      <span class="meta-pill">PDF 报告</span>
+    </div>
+  </section>
+
+  <div class="detail-content">
+
+    <div class="group-header">
+      <span class="group-badge y3">中层管理者</span>
+      <span class="group-line"></span>
+      <span class="group-count">7 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card" onclick="openReport2022('王凯')">
+        <div class="avatar y3">王</div>
+        <div class="card-info"><div class="name">王凯</div><div class="dept">技术中心</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2022('武利军')">
+        <div class="avatar y3">武</div>
+        <div class="card-info"><div class="name">武利军</div><div class="dept">风险管理中心</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2022('刘琳')">
+        <div class="avatar y3">刘</div>
+        <div class="card-info"><div class="name">刘琳</div><div class="dept">设计中心</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2022('付玲')">
+        <div class="avatar y3">付</div>
+        <div class="card-info"><div class="name">付玲</div><div class="dept">人力行政中心</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2022('李娜')">
+        <div class="avatar y3">李</div>
+        <div class="card-info"><div class="name">李娜</div><div class="dept">市场部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2022('侯冰')">
+        <div class="avatar y3">侯</div>
+        <div class="card-info"><div class="name">侯冰</div><div class="dept">产品运营部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card" onclick="openReport2022('韩静')">
+        <div class="avatar y3">韩</div>
+        <div class="card-info"><div class="name">韩静</div><div class="dept">智慧财富</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer class="site-footer">
-  Surfin People & Organization Development &middot; Internal Use Only &middot; 2023 &ndash; 2025
+  Surfin People & Organization Development &middot; Internal Use Only &middot; 2022 &ndash; 2025
 </footer>
 
 <script>
@@ -1287,6 +1364,9 @@ function openReport2024(name) {
 }
 function openReport2023(name, ext) {
   window.open('reports/2023/' + name + '.' + (ext || 'pdf'), '_blank');
+}
+function openReport2022(name) {
+  window.open('reports/2022/' + name + '.pdf', '_blank');
 }
 function checkGate() {
   const pw = document.getElementById('gate-pw').value;
@@ -1300,7 +1380,7 @@ function checkGate() {
 }
 function getRequestedYear() {
   var year = window.location.hash.replace('#', '');
-  return /^(2023|2024|2025)$/.test(year) ? year : null;
+  return /^(2022|2023|2024|2025)$/.test(year) ? year : null;
 }
 function openRequestedYear() {
   var year = getRequestedYear();
@@ -1320,6 +1400,7 @@ function goHome() {
   document.getElementById('detail-2025').classList.remove('active');
   document.getElementById('detail-2024').classList.remove('active');
   document.getElementById('detail-2023').classList.remove('active');
+  document.getElementById('detail-2022').classList.remove('active');
   if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
   window.scrollTo(0, 0);
 }
