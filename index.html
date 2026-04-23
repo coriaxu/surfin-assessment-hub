@@ -137,6 +137,54 @@ body {
   transition: opacity .3s;
 }
 .gate-error.show { opacity: 1; }
+.open-fallback {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  width: min(560px, calc(100vw - 32px));
+  background: rgba(28,42,58,.96);
+  color: #fff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 18px 40px rgba(15,23,42,.24);
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  z-index: 1200;
+}
+.open-fallback.show { display: flex; }
+.open-fallback-message {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.open-fallback-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.open-fallback-link,
+.open-fallback-close {
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+}
+.open-fallback-link {
+  color: #fff;
+  text-decoration: none;
+  background: rgba(255,255,255,.12);
+  padding: 8px 14px;
+}
+.open-fallback-close {
+  border: 1px solid rgba(255,255,255,.18);
+  background: transparent;
+  color: rgba(255,255,255,.85);
+  padding: 8px 12px;
+  cursor: pointer;
+}
 .gate-footer {
   margin-top: 48px;
   font-size: 11px; color: #c8ccd4;
@@ -313,6 +361,14 @@ body {
   transform: translateY(-3px);
   border-color: var(--accent-line);
 }
+.year-card:focus-visible,
+.manager-card:focus-visible,
+.team-banner-inner:focus-visible,
+.open-fallback-link:focus-visible,
+.open-fallback-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
 
 .year-card .year-num {
   font-family: "DM Sans",sans-serif;
@@ -461,6 +517,8 @@ body {
   justify-content: space-between;
   cursor: pointer;
   transition: all .28s cubic-bezier(.22,1,.36,1);
+  text-decoration: none;
+  color: inherit;
 }
 .team-banner-inner:hover {
   box-shadow: 0 8px 28px rgba(28,42,58,.18);
@@ -521,6 +579,7 @@ body {
 .group-badge.y3 { background: var(--ok-bg); color: var(--ok); }
 .group-badge.y2 { background: #e8f0fe; color: #1558b0; }
 .group-badge.y1 { background: var(--warn-bg); color: var(--warn); }
+.group-badge.resigned { background: #efe5d7; color: #8b5e34; }
 .group-line { flex: 1; height: 1px; background: var(--line); }
 .group-count {
   font-size: 12px; color: var(--muted);
@@ -553,6 +612,14 @@ body {
   transform: translateY(-2px);
   border-color: var(--accent-line);
 }
+.manager-card.is-resigned {
+  background: linear-gradient(180deg, #fcfaf6, #f7f2ea);
+  border-style: dashed;
+}
+.manager-card.is-resigned:hover {
+  border-color: #d4b588;
+  box-shadow: 0 8px 24px rgba(120,92,52,.12);
+}
 
 .avatar {
   width: 42px; height: 42px;
@@ -566,13 +633,33 @@ body {
 .avatar.y3 { background: linear-gradient(135deg, #2d8f6f, #3aab85); }
 .avatar.y2 { background: linear-gradient(135deg, #1558b0, #2d78d8); }
 .avatar.y1 { background: linear-gradient(135deg, #c48a1a, #daa035); }
+.avatar.resigned { background: linear-gradient(135deg, #7d6951, #aa8a64); }
 
 .card-info { flex: 1; min-width: 0; }
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
 .card-info .name {
   font-size: 15px; font-weight: 700;
   color: var(--primary);
   margin-bottom: 2px;
   line-height: 1.3;
+}
+.name-row .name { margin-bottom: 0; }
+.card-status {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #8b5e34;
+  background: #efe5d7;
+  border: 1px solid #e2cfb0;
+  font-family: "DM Sans","Noto Sans SC",sans-serif;
+  line-height: 1.2;
 }
 .card-info .dept {
   font-size: 12px; color: var(--muted);
@@ -624,6 +711,13 @@ body {
   .detail-hero h2 { font-size: 26px; }
   .manager-grid { grid-template-columns: 1fr; }
   .gate-card { width: 88vw; }
+  .open-fallback {
+    width: calc(100vw - 24px);
+    bottom: 16px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .open-fallback-actions { width: 100%; }
 }
 </style>
 </head>
@@ -663,6 +757,14 @@ body {
     <div class="header-meta">People & Organization Development</div>
   </div>
 </header>
+
+<div class="open-fallback" id="open-fallback" role="alert" aria-live="polite">
+  <div class="open-fallback-message" id="open-fallback-message">浏览器拦截了新窗口，请允许弹窗后重试。</div>
+  <div class="open-fallback-actions">
+    <a class="open-fallback-link" id="open-fallback-link" href="#" target="_self" rel="noreferrer">直接打开</a>
+    <button type="button" class="open-fallback-close" onclick="hideOpenFallback()">关闭</button>
+  </div>
+</div>
 
 <!-- ===== HOME ===== -->
 <div id="home-view">
@@ -706,7 +808,7 @@ body {
 
     <div class="year-layout">
       <div class="year-grid">
-        <a class="year-card current" onclick="showDetail('2025')">
+        <a class="year-card current" href="#2025" aria-label="查看2025年度测评详情" onclick="showDetail('2025'); return false;">
           <span class="tag-latest">Latest</span>
           <div class="year-num">2025</div>
           <div class="year-cycle">2025 年度测评</div>
@@ -715,7 +817,7 @@ body {
             <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
           </div>
         </a>
-        <a class="year-card" onclick="showDetail('2024')">
+        <a class="year-card" href="#2024" aria-label="查看2024年度测评详情" onclick="showDetail('2024'); return false;">
           <div class="year-num">2024</div>
           <div class="year-cycle">2024 年度测评</div>
           <div class="year-info">
@@ -723,35 +825,35 @@ body {
             <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
           </div>
         </a>
-        <a class="year-card" onclick="showDetail('2023')">
+        <a class="year-card" href="#2023" aria-label="查看2023年度测评详情" onclick="showDetail('2023'); return false;">
           <div class="year-num">2023</div>
           <div class="year-cycle">2023 年度测评</div>
           <div class="year-info">
-            <div class="info-row"><span class="status-dot live"></span>23 位管理者</div>
+            <div class="info-row"><span class="status-dot live"></span>26 位管理者</div>
             <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
           </div>
         </a>
-        <a class="year-card" onclick="showDetail('2022')">
+        <a class="year-card" href="#2022" aria-label="查看2022年度测评详情" onclick="showDetail('2022'); return false;">
           <div class="year-num">2022</div>
           <div class="year-cycle">2022 年度测评</div>
           <div class="year-info">
-            <div class="info-row"><span class="status-dot live"></span>19 位管理者</div>
+            <div class="info-row"><span class="status-dot live"></span>22 位管理者</div>
             <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
           </div>
         </a>
-        <a class="year-card" onclick="showDetail('2021')">
+        <a class="year-card" href="#2021" aria-label="查看2021年度测评详情" onclick="showDetail('2021'); return false;">
           <div class="year-num">2021</div>
           <div class="year-cycle">2021 年度测评</div>
           <div class="year-info">
-            <div class="info-row"><span class="status-dot live"></span>11 位管理者</div>
+            <div class="info-row"><span class="status-dot live"></span>13 位管理者</div>
             <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
           </div>
         </a>
-        <a class="year-card" onclick="showDetail('2020')">
+        <a class="year-card" href="#2020" aria-label="查看2020年度测评详情" onclick="showDetail('2020'); return false;">
           <div class="year-num">2020</div>
           <div class="year-cycle">2020 年度测评</div>
           <div class="year-info">
-            <div class="info-row"><span class="status-dot live"></span>9 位管理者</div>
+            <div class="info-row"><span class="status-dot live"></span>16 位管理者</div>
             <div class="info-row"><span class="status-dot live"></span>报告已上线</div>
           </div>
         </a>
@@ -791,7 +893,7 @@ body {
   </section>
 
   <div class="team-banner">
-    <div class="team-banner-inner" onclick="window.open('reports/2025/团队反馈报告.pdf','_blank')">
+    <a class="team-banner-inner js-external-link" href="reports/2025/团队反馈报告.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开2025团队共性分析报告" data-fallback-label="2025团队共性分析报告">
       <div class="team-banner-left">
         <div class="team-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -806,7 +908,7 @@ body {
       <div class="team-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
       </div>
-    </div>
+    </a>
   </div>
 
   <div class="detail-content">
@@ -818,37 +920,37 @@ body {
       <span class="group-count">7 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport('赵汉洋')">
+      <a class="manager-card js-external-link" href="reports/2025/赵汉洋.html" target="_blank" rel="noopener noreferrer" aria-label="打开赵汉洋的2025年度测评报告" data-fallback-label="赵汉洋的2025年度测评报告">
         <div class="avatar y3">赵</div>
         <div class="card-info"><div class="name">赵汉洋</div><div class="dept">风险管理中心 / 大数据部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport('刘天益')">
+      <a class="manager-card js-external-link" href="reports/2025/刘天益.html" target="_blank" rel="noopener noreferrer" aria-label="打开刘天益的2025年度测评报告" data-fallback-label="刘天益的2025年度测评报告">
         <div class="avatar y3">刘</div>
         <div class="card-info"><div class="name">刘天益</div><div class="dept">风险管理中心 / 特征开发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport('姚亚坤')">
+      <a class="manager-card js-external-link" href="reports/2025/姚亚坤.html" target="_blank" rel="noopener noreferrer" aria-label="打开姚亚坤的2025年度测评报告" data-fallback-label="姚亚坤的2025年度测评报告">
         <div class="avatar y3">姚</div>
         <div class="card-info"><div class="name">姚亚坤</div><div class="dept">技术中心 / 支付组</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport('唐必洪')">
+      <a class="manager-card js-external-link" href="reports/2025/唐必洪.html" target="_blank" rel="noopener noreferrer" aria-label="打开唐必洪的2025年度测评报告" data-fallback-label="唐必洪的2025年度测评报告">
         <div class="avatar y3">唐</div>
         <div class="card-info"><div class="name">唐必洪</div><div class="dept">技术中心 / 智慧财富支持部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport('李晓铮')">
+      <a class="manager-card js-external-link" href="reports/2025/李晓铮.html" target="_blank" rel="noopener noreferrer" aria-label="打开李晓铮的2025年度测评报告" data-fallback-label="李晓铮的2025年度测评报告">
         <div class="avatar y3">李</div>
         <div class="card-info"><div class="name">李晓铮</div><div class="dept">技术中心 / 信用卡组</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport('张自富')">
+      <a class="manager-card js-external-link" href="reports/2025/张自富.html" target="_blank" rel="noopener noreferrer" aria-label="打开张自富的2025年度测评报告" data-fallback-label="张自富的2025年度测评报告">
         <div class="avatar y3">张</div>
         <div class="card-info"><div class="name">张自富</div><div class="dept">技术中心 / 基础架构部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport('魏丽惠')">
+      <a class="manager-card js-external-link" href="reports/2025/魏丽惠.html" target="_blank" rel="noopener noreferrer" aria-label="打开魏丽惠的2025年度测评报告" data-fallback-label="魏丽惠的2025年度测评报告">
         <div class="avatar y3">魏</div>
         <div class="card-info"><div class="name">魏丽惠</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
@@ -862,37 +964,37 @@ body {
       <span class="group-count">7 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport('杨蕊')">
+      <a class="manager-card js-external-link" href="reports/2025/杨蕊.html" target="_blank" rel="noopener noreferrer" aria-label="打开杨蕊的2025年度测评报告" data-fallback-label="杨蕊的2025年度测评报告">
         <div class="avatar y2">杨</div>
         <div class="card-info"><div class="name">杨蕊</div><div class="dept">财务部 / 核算组</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport('王尚程')">
+      <a class="manager-card js-external-link" href="reports/2025/王尚程.html" target="_blank" rel="noopener noreferrer" aria-label="打开王尚程的2025年度测评报告" data-fallback-label="王尚程的2025年度测评报告">
         <div class="avatar y2">王</div>
         <div class="card-info"><div class="name">王尚程</div><div class="dept">风险管理中心 / 上海分部</div></div>
         <span class="card-loc">上海</span>
       </a>
-      <a class="manager-card" onclick="openReport('孙丰')">
+      <a class="manager-card js-external-link" href="reports/2025/孙丰.html" target="_blank" rel="noopener noreferrer" aria-label="打开孙丰的2025年度测评报告" data-fallback-label="孙丰的2025年度测评报告">
         <div class="avatar y2">孙</div>
         <div class="card-info"><div class="name">孙丰</div><div class="dept">产品运营部 / 武汉产品组</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport('李帅')">
+      <a class="manager-card js-external-link" href="reports/2025/李帅.html" target="_blank" rel="noopener noreferrer" aria-label="打开李帅的2025年度测评报告" data-fallback-label="李帅的2025年度测评报告">
         <div class="avatar y2">李</div>
         <div class="card-info"><div class="name">李帅</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport('饶鹏达')">
+      <a class="manager-card js-external-link" href="reports/2025/饶鹏达.html" target="_blank" rel="noopener noreferrer" aria-label="打开饶鹏达的2025年度测评报告" data-fallback-label="饶鹏达的2025年度测评报告">
         <div class="avatar y2">饶</div>
         <div class="card-info"><div class="name">饶鹏达</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport('聂舜')">
+      <a class="manager-card js-external-link" href="reports/2025/聂舜.html" target="_blank" rel="noopener noreferrer" aria-label="打开聂舜的2025年度测评报告" data-fallback-label="聂舜的2025年度测评报告">
         <div class="avatar y2">聂</div>
         <div class="card-info"><div class="name">聂舜</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport('安俊')">
+      <a class="manager-card js-external-link" href="reports/2025/安俊.html" target="_blank" rel="noopener noreferrer" aria-label="打开安俊的2025年度测评报告" data-fallback-label="安俊的2025年度测评报告">
         <div class="avatar y2">安</div>
         <div class="card-info"><div class="name">安俊</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
@@ -906,32 +1008,32 @@ body {
       <span class="group-count">6 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport('刘晨晨')">
+      <a class="manager-card js-external-link" href="reports/2025/刘晨晨.html" target="_blank" rel="noopener noreferrer" aria-label="打开刘晨晨的2025年度测评报告" data-fallback-label="刘晨晨的2025年度测评报告">
         <div class="avatar y1">刘</div>
         <div class="card-info"><div class="name">刘晨晨</div><div class="dept">风险管理中心 / 风险策略部-B</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport('何霄鹏')">
+      <a class="manager-card js-external-link" href="reports/2025/何霄鹏.html" target="_blank" rel="noopener noreferrer" aria-label="打开何霄鹏的2025年度测评报告" data-fallback-label="何霄鹏的2025年度测评报告">
         <div class="avatar y1">何</div>
         <div class="card-info"><div class="name">何霄鹏</div><div class="dept">技术中心 / to B</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport('程双双')">
+      <a class="manager-card js-external-link" href="reports/2025/程双双.html" target="_blank" rel="noopener noreferrer" aria-label="打开程双双的2025年度测评报告" data-fallback-label="程双双的2025年度测评报告">
         <div class="avatar y1">程</div>
         <div class="card-info"><div class="name">程双双</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport('韩军昌')">
+      <a class="manager-card js-external-link" href="reports/2025/韩军昌.html" target="_blank" rel="noopener noreferrer" aria-label="打开韩军昌的2025年度测评报告" data-fallback-label="韩军昌的2025年度测评报告">
         <div class="avatar y1">韩</div>
         <div class="card-info"><div class="name">韩军昌</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport('徐选伟')">
+      <a class="manager-card js-external-link" href="reports/2025/徐选伟.html" target="_blank" rel="noopener noreferrer" aria-label="打开徐选伟的2025年度测评报告" data-fallback-label="徐选伟的2025年度测评报告">
         <div class="avatar y1">徐</div>
         <div class="card-info"><div class="name">徐选伟</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport('曾德传')">
+      <a class="manager-card js-external-link" href="reports/2025/曾德传.html" target="_blank" rel="noopener noreferrer" aria-label="打开曾德传的2025年度测评报告" data-fallback-label="曾德传的2025年度测评报告">
         <div class="avatar y1">曾</div>
         <div class="card-info"><div class="name">曾德传</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">海口</span>
@@ -971,37 +1073,37 @@ body {
       <span class="group-count">7 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2024('刘天益')">
+      <a class="manager-card js-external-link" href="reports/2024/刘天益.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘天益的2024年度测评报告" data-fallback-label="刘天益的2024年度测评报告">
         <div class="avatar y3">刘</div>
         <div class="card-info"><div class="name">刘天益</div><div class="dept">风险管理中心 / 特征开发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('李晓铮')">
+      <a class="manager-card js-external-link" href="reports/2024/李晓铮.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李晓铮的2024年度测评报告" data-fallback-label="李晓铮的2024年度测评报告">
         <div class="avatar y3">李</div>
         <div class="card-info"><div class="name">李晓铮</div><div class="dept">技术中心 / 信用卡部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('唐必洪')">
+      <a class="manager-card js-external-link" href="reports/2024/唐必洪.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开唐必洪的2024年度测评报告" data-fallback-label="唐必洪的2024年度测评报告">
         <div class="avatar y3">唐</div>
         <div class="card-info"><div class="name">唐必洪</div><div class="dept">技术中心 / 智慧财富部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('姚亚坤')">
+      <a class="manager-card js-external-link" href="reports/2024/姚亚坤.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开姚亚坤的2024年度测评报告" data-fallback-label="姚亚坤的2024年度测评报告">
         <div class="avatar y3">姚</div>
         <div class="card-info"><div class="name">姚亚坤</div><div class="dept">技术中心 / 支付部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('李瑞强')">
+      <a class="manager-card js-external-link" href="reports/2024/李瑞强.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李瑞强的2024年度测评报告" data-fallback-label="李瑞强的2024年度测评报告">
         <div class="avatar y3">李</div>
         <div class="card-info"><div class="name">李瑞强</div><div class="dept">技术中心 / 智慧信贷部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('张自富')">
+      <a class="manager-card js-external-link" href="reports/2024/张自富.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开张自富的2024年度测评报告" data-fallback-label="张自富的2024年度测评报告">
         <div class="avatar y3">张</div>
         <div class="card-info"><div class="name">张自富</div><div class="dept">技术中心 / 基础架构部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('魏丽惠')">
+      <a class="manager-card js-external-link" href="reports/2024/魏丽惠.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开魏丽惠的2024年度测评报告" data-fallback-label="魏丽惠的2024年度测评报告">
         <div class="avatar y3">魏</div>
         <div class="card-info"><div class="name">魏丽惠</div><div class="dept">技术中心 / 智慧信贷部-QA</div></div>
         <span class="card-loc">武汉</span>
@@ -1015,17 +1117,17 @@ body {
       <span class="group-count">3 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2024('赵汉洋')">
+      <a class="manager-card js-external-link" href="reports/2024/赵汉洋.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开赵汉洋的2024年度测评报告" data-fallback-label="赵汉洋的2024年度测评报告">
         <div class="avatar y2">赵</div>
         <div class="card-info"><div class="name">赵汉洋</div><div class="dept">风险管理中心 / 大数据部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('董怡雪')">
+      <a class="manager-card js-external-link" href="reports/2024/董怡雪.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开董怡雪的2024年度测评报告" data-fallback-label="董怡雪的2024年度测评报告">
         <div class="avatar y2">董</div>
         <div class="card-info"><div class="name">董怡雪</div><div class="dept">技术中心 / QA</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('高忠强')">
+      <a class="manager-card js-external-link" href="reports/2024/高忠强.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开高忠强的2024年度测评报告" data-fallback-label="高忠强的2024年度测评报告">
         <div class="avatar y2">高</div>
         <div class="card-info"><div class="name">高忠强</div><div class="dept">技术中心 / 智慧信贷部</div></div>
         <span class="card-loc">海口</span>
@@ -1039,52 +1141,52 @@ body {
       <span class="group-count">10 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2024('杨蕊')">
+      <a class="manager-card js-external-link" href="reports/2024/杨蕊.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开杨蕊的2024年度测评报告" data-fallback-label="杨蕊的2024年度测评报告">
         <div class="avatar y1">杨</div>
         <div class="card-info"><div class="name">杨蕊</div><div class="dept">财务部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('王尚程')">
+      <a class="manager-card js-external-link" href="reports/2024/王尚程.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开王尚程的2024年度测评报告" data-fallback-label="王尚程的2024年度测评报告">
         <div class="avatar y1">王</div>
         <div class="card-info"><div class="name">王尚程</div><div class="dept">风险管理中心</div></div>
         <span class="card-loc">上海</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('刘宇鹏')">
+      <a class="manager-card js-external-link" href="reports/2024/刘宇鹏.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘宇鹏的2024年度测评报告" data-fallback-label="刘宇鹏的2024年度测评报告">
         <div class="avatar y1">刘</div>
         <div class="card-info"><div class="name">刘宇鹏</div><div class="dept">风险管理中心 / 风险策略部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('孙丰')">
+      <a class="manager-card js-external-link" href="reports/2024/孙丰.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开孙丰的2024年度测评报告" data-fallback-label="孙丰的2024年度测评报告">
         <div class="avatar y1">孙</div>
         <div class="card-info"><div class="name">孙丰</div><div class="dept">产品运营部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('吕亚楠')">
+      <a class="manager-card js-external-link" href="reports/2024/吕亚楠.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开吕亚楠的2024年度测评报告" data-fallback-label="吕亚楠的2024年度测评报告">
         <div class="avatar y1">吕</div>
         <div class="card-info"><div class="name">吕亚楠</div><div class="dept">产品运营部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('王雅平')">
+      <a class="manager-card js-external-link" href="reports/2024/王雅平.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开王雅平的2024年度测评报告" data-fallback-label="王雅平的2024年度测评报告">
         <div class="avatar y1">王</div>
         <div class="card-info"><div class="name">王雅平</div><div class="dept">产品运营部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('李帅')">
+      <a class="manager-card js-external-link" href="reports/2024/李帅.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李帅的2024年度测评报告" data-fallback-label="李帅的2024年度测评报告">
         <div class="avatar y1">李</div>
         <div class="card-info"><div class="name">李帅</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('饶鹏达')">
+      <a class="manager-card js-external-link" href="reports/2024/饶鹏达.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开饶鹏达的2024年度测评报告" data-fallback-label="饶鹏达的2024年度测评报告">
         <div class="avatar y1">饶</div>
         <div class="card-info"><div class="name">饶鹏达</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('聂舜')">
+      <a class="manager-card js-external-link" href="reports/2024/聂舜.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开聂舜的2024年度测评报告" data-fallback-label="聂舜的2024年度测评报告">
         <div class="avatar y1">聂</div>
         <div class="card-info"><div class="name">聂舜</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2024('安俊')">
+      <a class="manager-card js-external-link" href="reports/2024/安俊.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开安俊的2024年度测评报告" data-fallback-label="安俊的2024年度测评报告">
         <div class="avatar y1">安</div>
         <div class="card-info"><div class="name">安俊</div><div class="dept">技术中心 / 信贷支持部</div></div>
         <span class="card-loc">武汉</span>
@@ -1109,14 +1211,14 @@ body {
     <h2>2023 管理者测评</h2>
     <div class="meta-pills">
       <span class="meta-pill">2023 年度测评</span>
-      <span class="meta-pill">23 位管理者</span>
-      <span class="meta-pill">3 个管理层级</span>
+      <span class="meta-pill">26 位管理者</span>
+      <span class="meta-pill">4 个分组</span>
       <span class="meta-pill">PDF 报告</span>
     </div>
   </section>
 
   <div class="team-banner">
-    <div class="team-banner-inner" onclick="window.open('reports/2023/团队报告.pdf','_blank')">
+    <a class="team-banner-inner js-external-link" href="reports/2023/团队报告.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开2023团队共性分析报告" data-fallback-label="2023团队共性分析报告">
       <div class="team-banner-left">
         <div class="team-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1131,7 +1233,7 @@ body {
       <div class="team-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
       </div>
-    </div>
+    </a>
   </div>
 
   <div class="detail-content">
@@ -1143,37 +1245,37 @@ body {
       <span class="group-count">7 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2023('王凯')">
+      <a class="manager-card js-external-link" href="reports/2023/王凯.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开王凯的2023年度测评报告" data-fallback-label="王凯的2023年度测评报告">
         <div class="avatar y3">王</div>
         <div class="card-info"><div class="name">王凯</div><div class="dept">技术中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('武利军')">
+      <a class="manager-card js-external-link" href="reports/2023/武利军.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开武利军的2023年度测评报告" data-fallback-label="武利军的2023年度测评报告">
         <div class="avatar y3">武</div>
         <div class="card-info"><div class="name">武利军</div><div class="dept">风险管理中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('付玲')">
+      <a class="manager-card js-external-link" href="reports/2023/付玲.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开付玲的2023年度测评报告" data-fallback-label="付玲的2023年度测评报告">
         <div class="avatar y3">付</div>
         <div class="card-info"><div class="name">付玲</div><div class="dept">人力行政中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('刘琳')">
+      <a class="manager-card js-external-link" href="reports/2023/刘琳.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘琳的2023年度测评报告" data-fallback-label="刘琳的2023年度测评报告">
         <div class="avatar y3">刘</div>
         <div class="card-info"><div class="name">刘琳</div><div class="dept">设计中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('李娜')">
+      <a class="manager-card js-external-link" href="reports/2023/李娜.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李娜的2023年度测评报告" data-fallback-label="李娜的2023年度测评报告">
         <div class="avatar y3">李</div>
         <div class="card-info"><div class="name">李娜</div><div class="dept">市场部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('侯冰')">
+      <a class="manager-card js-external-link" href="reports/2023/侯冰.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开侯冰的2023年度测评报告" data-fallback-label="侯冰的2023年度测评报告">
         <div class="avatar y3">侯</div>
         <div class="card-info"><div class="name">侯冰</div><div class="dept">产品运营部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('秦鹏')">
+      <a class="manager-card js-external-link" href="reports/2023/秦鹏.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开秦鹏的2023年度测评报告" data-fallback-label="秦鹏的2023年度测评报告">
         <div class="avatar y3">秦</div>
         <div class="card-info"><div class="name">秦鹏</div><div class="dept">财务中心</div></div>
         <span class="card-loc">北京</span>
@@ -1187,67 +1289,67 @@ body {
       <span class="group-count">13 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2023('李瑞强')">
+      <a class="manager-card js-external-link" href="reports/2023/李瑞强.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李瑞强的2023年度测评报告" data-fallback-label="李瑞强的2023年度测评报告">
         <div class="avatar y2">李</div>
         <div class="card-info"><div class="name">李瑞强</div><div class="dept">技术中心 / 后端研发部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('姚亚坤')">
+      <a class="manager-card js-external-link" href="reports/2023/姚亚坤.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开姚亚坤的2023年度测评报告" data-fallback-label="姚亚坤的2023年度测评报告">
         <div class="avatar y2">姚</div>
         <div class="card-info"><div class="name">姚亚坤</div><div class="dept">技术中心 / 智慧财富支持</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('李晓铮')">
+      <a class="manager-card js-external-link" href="reports/2023/李晓铮.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李晓铮的2023年度测评报告" data-fallback-label="李晓铮的2023年度测评报告">
         <div class="avatar y2">李</div>
         <div class="card-info"><div class="name">李晓铮</div><div class="dept">技术中心 / 后端研发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('程双双')">
+      <a class="manager-card js-external-link" href="reports/2023/程双双.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开程双双的2023年度测评报告" data-fallback-label="程双双的2023年度测评报告">
         <div class="avatar y2">程</div>
         <div class="card-info"><div class="name">程双双</div><div class="dept">技术中心 / 前端研发部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('魏丽惠')">
+      <a class="manager-card js-external-link" href="reports/2023/魏丽惠.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开魏丽惠的2023年度测评报告" data-fallback-label="魏丽惠的2023年度测评报告">
         <div class="avatar y2">魏</div>
         <div class="card-info"><div class="name">魏丽惠</div><div class="dept">技术中心 / 测试部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('张自富')">
+      <a class="manager-card js-external-link" href="reports/2023/张自富.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开张自富的2023年度测评报告" data-fallback-label="张自富的2023年度测评报告">
         <div class="avatar y2">张</div>
         <div class="card-info"><div class="name">张自富</div><div class="dept">技术中心 / 基础设施部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('唐必洪')">
+      <a class="manager-card js-external-link" href="reports/2023/唐必洪.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开唐必洪的2023年度测评报告" data-fallback-label="唐必洪的2023年度测评报告">
         <div class="avatar y2">唐</div>
         <div class="card-info"><div class="name">唐必洪</div><div class="dept">技术中心 / 智慧财富支持</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('刘天益')">
+      <a class="manager-card js-external-link" href="reports/2023/刘天益.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘天益的2023年度测评报告" data-fallback-label="刘天益的2023年度测评报告">
         <div class="avatar y2">刘</div>
         <div class="card-info"><div class="name">刘天益</div><div class="dept">风险管理中心 / 特征开发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('赵汉洋')">
+      <a class="manager-card js-external-link" href="reports/2023/赵汉洋.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开赵汉洋的2023年度测评报告" data-fallback-label="赵汉洋的2023年度测评报告">
         <div class="avatar y2">赵</div>
         <div class="card-info"><div class="name">赵汉洋</div><div class="dept">风险管理中心 / 大数据部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('董怡雪')">
+      <a class="manager-card js-external-link" href="reports/2023/董怡雪.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开董怡雪的2023年度测评报告" data-fallback-label="董怡雪的2023年度测评报告">
         <div class="avatar y2">董</div>
         <div class="card-info"><div class="name">董怡雪</div><div class="dept">技术中心 / 测试部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('高忠强')">
+      <a class="manager-card js-external-link" href="reports/2023/高忠强.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开高忠强的2023年度测评报告" data-fallback-label="高忠强的2023年度测评报告">
         <div class="avatar y2">高</div>
         <div class="card-info"><div class="name">高忠强</div><div class="dept">技术中心 / 测试部</div></div>
         <span class="card-loc">海口</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('张晓文')">
+      <a class="manager-card js-external-link" href="reports/2023/张晓文.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开张晓文的2023年度测评报告" data-fallback-label="张晓文的2023年度测评报告">
         <div class="avatar y2">张</div>
         <div class="card-info"><div class="name">张晓文</div><div class="dept">技术中心 / 前端研发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('崔明佳')">
+      <a class="manager-card js-external-link" href="reports/2023/崔明佳.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开崔明佳的2023年度测评报告" data-fallback-label="崔明佳的2023年度测评报告">
         <div class="avatar y2">崔</div>
         <div class="card-info"><div class="name">崔明佳</div><div class="dept">技术中心 / 前端研发部</div></div>
         <span class="card-loc">北京</span>
@@ -1261,19 +1363,42 @@ body {
       <span class="group-count">3 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2023('李艳丽','pptx')">
+      <a class="manager-card js-external-link" href="reports/2023/李艳丽.pptx" target="_blank" rel="noopener noreferrer" aria-label="打开李艳丽的2023年度测评报告" data-fallback-label="李艳丽的2023年度测评报告">
         <div class="avatar y1">李</div>
         <div class="card-info"><div class="name">李艳丽 Summer</div><div class="dept">海外 Country Manager</div></div>
         <span class="card-loc">海外</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('刘傲','pptx')">
+      <a class="manager-card js-external-link" href="reports/2023/刘傲.pptx" target="_blank" rel="noopener noreferrer" aria-label="打开刘傲的2023年度测评报告" data-fallback-label="刘傲的2023年度测评报告">
         <div class="avatar y1">刘</div>
         <div class="card-info"><div class="name">刘傲 Leo</div><div class="dept">海外 Country Manager</div></div>
         <span class="card-loc">海外</span>
       </a>
-      <a class="manager-card" onclick="openReport2023('周俞君','pptx')">
+      <a class="manager-card js-external-link" href="reports/2023/周俞君.pptx" target="_blank" rel="noopener noreferrer" aria-label="打开周俞君的2023年度测评报告" data-fallback-label="周俞君的2023年度测评报告">
         <div class="avatar y1">周</div>
         <div class="card-info"><div class="name">周俞君 Joey</div><div class="dept">海外 Country Manager</div></div>
+        <span class="card-loc">海外</span>
+      </a>
+    </div>
+
+    <div class="group-header">
+      <span class="group-badge resigned">已离职员工</span>
+      <span class="group-line"></span>
+      <span class="group-count">3 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card is-resigned js-external-link" href="reports/2023/孙功强.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开孙功强的2023年度测评报告" data-fallback-label="孙功强的2023年度测评报告">
+        <div class="avatar resigned">孙</div>
+        <div class="card-info"><div class="name-row"><div class="name">孙功强</div><span class="card-status">已离职</span></div><div class="dept">风险管理中心 / 模型开发部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2023/李敬.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李敬的2023年度测评报告" data-fallback-label="李敬的2023年度测评报告">
+        <div class="avatar resigned">李</div>
+        <div class="card-info"><div class="name-row"><div class="name">李敬</div><span class="card-status">已离职</span></div><div class="dept">技术中心 / 北京-BE-B1</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2023/谢爱帅.pptx" target="_blank" rel="noopener noreferrer" aria-label="打开谢爱帅的2023年度测评报告" data-fallback-label="谢爱帅的2023年度测评报告">
+        <div class="avatar resigned">谢</div>
+        <div class="card-info"><div class="name-row"><div class="name">谢爱帅</div><span class="card-status">已离职</span></div><div class="dept">海外 Country Manager</div></div>
         <span class="card-loc">海外</span>
       </a>
     </div>
@@ -1296,8 +1421,8 @@ body {
     <h2>2022 管理者测评</h2>
     <div class="meta-pills">
       <span class="meta-pill">2022 年度测评</span>
-      <span class="meta-pill">19 位管理者</span>
-      <span class="meta-pill">4 个分组</span>
+      <span class="meta-pill">22 位管理者</span>
+      <span class="meta-pill">5 个分组</span>
       <span class="meta-pill">PDF 报告</span>
     </div>
   </section>
@@ -1311,37 +1436,37 @@ body {
       <span class="group-count">7 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2022('王凯')">
+      <a class="manager-card js-external-link" href="reports/2022/王凯.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开王凯的2022年度测评报告" data-fallback-label="王凯的2022年度测评报告">
         <div class="avatar y3">王</div>
         <div class="card-info"><div class="name">王凯</div><div class="dept">技术中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('武利军')">
+      <a class="manager-card js-external-link" href="reports/2022/武利军.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开武利军的2022年度测评报告" data-fallback-label="武利军的2022年度测评报告">
         <div class="avatar y3">武</div>
         <div class="card-info"><div class="name">武利军</div><div class="dept">风险管理中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('刘琳')">
+      <a class="manager-card js-external-link" href="reports/2022/刘琳.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘琳的2022年度测评报告" data-fallback-label="刘琳的2022年度测评报告">
         <div class="avatar y3">刘</div>
         <div class="card-info"><div class="name">刘琳</div><div class="dept">设计中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('付玲')">
+      <a class="manager-card js-external-link" href="reports/2022/付玲.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开付玲的2022年度测评报告" data-fallback-label="付玲的2022年度测评报告">
         <div class="avatar y3">付</div>
         <div class="card-info"><div class="name">付玲</div><div class="dept">人力行政中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('李娜')">
+      <a class="manager-card js-external-link" href="reports/2022/李娜.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李娜的2022年度测评报告" data-fallback-label="李娜的2022年度测评报告">
         <div class="avatar y3">李</div>
         <div class="card-info"><div class="name">李娜</div><div class="dept">市场部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('侯冰')">
+      <a class="manager-card js-external-link" href="reports/2022/侯冰.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开侯冰的2022年度测评报告" data-fallback-label="侯冰的2022年度测评报告">
         <div class="avatar y3">侯</div>
         <div class="card-info"><div class="name">侯冰</div><div class="dept">产品运营部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('韩静')">
+      <a class="manager-card js-external-link" href="reports/2022/韩静.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开韩静的2022年度测评报告" data-fallback-label="韩静的2022年度测评报告">
         <div class="avatar y3">韩</div>
         <div class="card-info"><div class="name">韩静</div><div class="dept">智慧财富</div></div>
         <span class="card-loc">北京</span>
@@ -1355,27 +1480,27 @@ body {
       <span class="group-count">5 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2022('魏丽惠')">
+      <a class="manager-card js-external-link" href="reports/2022/魏丽惠.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开魏丽惠的2022年度测评报告" data-fallback-label="魏丽惠的2022年度测评报告">
         <div class="avatar y2">魏</div>
         <div class="card-info"><div class="name">魏丽惠</div><div class="dept">技术中心 / 测试部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('姚亚坤')">
+      <a class="manager-card js-external-link" href="reports/2022/姚亚坤.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开姚亚坤的2022年度测评报告" data-fallback-label="姚亚坤的2022年度测评报告">
         <div class="avatar y2">姚</div>
         <div class="card-info"><div class="name">姚亚坤</div><div class="dept">技术中心 / 智慧财富支持</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('程双双')">
+      <a class="manager-card js-external-link" href="reports/2022/程双双.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开程双双的2022年度测评报告" data-fallback-label="程双双的2022年度测评报告">
         <div class="avatar y2">程</div>
         <div class="card-info"><div class="name">程双双</div><div class="dept">技术中心 / 前端研发部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('李晓铮')">
+      <a class="manager-card js-external-link" href="reports/2022/李晓铮.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李晓铮的2022年度测评报告" data-fallback-label="李晓铮的2022年度测评报告">
         <div class="avatar y2">李</div>
         <div class="card-info"><div class="name">李晓铮</div><div class="dept">技术中心 / 后端研发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('李瑞强')">
+      <a class="manager-card js-external-link" href="reports/2022/李瑞强.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李瑞强的2022年度测评报告" data-fallback-label="李瑞强的2022年度测评报告">
         <div class="avatar y2">李</div>
         <div class="card-info"><div class="name">李瑞强</div><div class="dept">技术中心 / 后端研发部</div></div>
         <span class="card-loc">武汉</span>
@@ -1389,27 +1514,27 @@ body {
       <span class="group-count">5 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2022('刘天益')">
+      <a class="manager-card js-external-link" href="reports/2022/刘天益.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘天益的2022年度测评报告" data-fallback-label="刘天益的2022年度测评报告">
         <div class="avatar y1">刘</div>
         <div class="card-info"><div class="name">刘天益</div><div class="dept">风险管理中心 / 特征开发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('唐必洪')">
+      <a class="manager-card js-external-link" href="reports/2022/唐必洪.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开唐必洪的2022年度测评报告" data-fallback-label="唐必洪的2022年度测评报告">
         <div class="avatar y1">唐</div>
         <div class="card-info"><div class="name">唐必洪</div><div class="dept">技术中心 / 智慧财富支持</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('崔明佳')">
+      <a class="manager-card js-external-link" href="reports/2022/崔明佳.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开崔明佳的2022年度测评报告" data-fallback-label="崔明佳的2022年度测评报告">
         <div class="avatar y1">崔</div>
         <div class="card-info"><div class="name">崔明佳</div><div class="dept">技术中心 / 前端研发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('张晓文')">
+      <a class="manager-card js-external-link" href="reports/2022/张晓文.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开张晓文的2022年度测评报告" data-fallback-label="张晓文的2022年度测评报告">
         <div class="avatar y1">张</div>
         <div class="card-info"><div class="name">张晓文</div><div class="dept">技术中心 / 前端研发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('张自富')">
+      <a class="manager-card js-external-link" href="reports/2022/张自富.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开张自富的2022年度测评报告" data-fallback-label="张自富的2022年度测评报告">
         <div class="avatar y1">张</div>
         <div class="card-info"><div class="name">张自富</div><div class="dept">技术中心 / 基础设施部</div></div>
         <span class="card-loc">武汉</span>
@@ -1423,15 +1548,38 @@ body {
       <span class="group-count">2 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2022('Rishabh')">
+      <a class="manager-card js-external-link" href="reports/2022/Rishabh.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开Rishabh的2022年度测评报告" data-fallback-label="Rishabh的2022年度测评报告">
         <div class="avatar y1">R</div>
         <div class="card-info"><div class="name">Rishabh</div><div class="dept">India Country Manager</div></div>
         <span class="card-loc">印度</span>
       </a>
-      <a class="manager-card" onclick="openReport2022('ankita')">
+      <a class="manager-card js-external-link" href="reports/2022/ankita.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开ankita的2022年度测评报告" data-fallback-label="ankita的2022年度测评报告">
         <div class="avatar y1">A</div>
         <div class="card-info"><div class="name">ankita</div><div class="dept">India Country Manager</div></div>
         <span class="card-loc">印度</span>
+      </a>
+    </div>
+
+    <div class="group-header">
+      <span class="group-badge resigned">已离职员工</span>
+      <span class="group-line"></span>
+      <span class="group-count">3 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card is-resigned js-external-link" href="reports/2022/刁玉慧.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刁玉慧的2022年度测评报告" data-fallback-label="刁玉慧的2022年度测评报告">
+        <div class="avatar resigned">刁</div>
+        <div class="card-info"><div class="name-row"><div class="name">刁玉慧</div><span class="card-status">已离职</span></div><div class="dept">人力行政部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2022/孙功强.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开孙功强的2022年度测评报告" data-fallback-label="孙功强的2022年度测评报告">
+        <div class="avatar resigned">孙</div>
+        <div class="card-info"><div class="name-row"><div class="name">孙功强</div><span class="card-status">已离职</span></div><div class="dept">Risk Control Model Advisor</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2022/李敬.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李敬的2022年度测评报告" data-fallback-label="李敬的2022年度测评报告">
+        <div class="avatar resigned">李</div>
+        <div class="card-info"><div class="name-row"><div class="name">李敬</div><span class="card-status">已离职</span></div><div class="dept">Senior PHP Engineer</div></div>
+        <span class="card-loc">北京</span>
       </a>
     </div>
 
@@ -1453,14 +1601,14 @@ body {
     <h2>2021 管理者测评</h2>
     <div class="meta-pills">
       <span class="meta-pill">2021 年度测评</span>
-      <span class="meta-pill">11 位管理者</span>
-      <span class="meta-pill">2 个管理层级</span>
+      <span class="meta-pill">13 位管理者</span>
+      <span class="meta-pill">3 个分组</span>
       <span class="meta-pill">PDF 报告</span>
     </div>
   </section>
 
   <div class="team-banner">
-    <div class="team-banner-inner" onclick="window.open('reports/2021/团队报告.pdf','_blank')">
+    <a class="team-banner-inner js-external-link" href="reports/2021/团队报告.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开2021团队共性分析报告" data-fallback-label="2021团队共性分析报告">
       <div class="team-banner-left">
         <div class="team-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1475,7 +1623,7 @@ body {
       <div class="team-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
       </div>
-    </div>
+    </a>
   </div>
 
   <div class="detail-content">
@@ -1487,32 +1635,32 @@ body {
       <span class="group-count">6 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2021('王凯')">
+      <a class="manager-card js-external-link" href="reports/2021/王凯.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开王凯的2021年度测评报告" data-fallback-label="王凯的2021年度测评报告">
         <div class="avatar y3">王</div>
         <div class="card-info"><div class="name">王凯</div><div class="dept">技术中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2021('武利军')">
+      <a class="manager-card js-external-link" href="reports/2021/武利军.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开武利军的2021年度测评报告" data-fallback-label="武利军的2021年度测评报告">
         <div class="avatar y3">武</div>
         <div class="card-info"><div class="name">武利军</div><div class="dept">风险管理中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2021('刘琳')">
+      <a class="manager-card js-external-link" href="reports/2021/刘琳.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘琳的2021年度测评报告" data-fallback-label="刘琳的2021年度测评报告">
         <div class="avatar y3">刘</div>
         <div class="card-info"><div class="name">刘琳</div><div class="dept">设计中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2021('付玲')">
+      <a class="manager-card js-external-link" href="reports/2021/付玲.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开付玲的2021年度测评报告" data-fallback-label="付玲的2021年度测评报告">
         <div class="avatar y3">付</div>
         <div class="card-info"><div class="name">付玲</div><div class="dept">人力行政中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2021('侯冰')">
+      <a class="manager-card js-external-link" href="reports/2021/侯冰.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开侯冰的2021年度测评报告" data-fallback-label="侯冰的2021年度测评报告">
         <div class="avatar y3">侯</div>
         <div class="card-info"><div class="name">侯冰</div><div class="dept">产品运营部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2021('李娜')">
+      <a class="manager-card js-external-link" href="reports/2021/李娜.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李娜的2021年度测评报告" data-fallback-label="李娜的2021年度测评报告">
         <div class="avatar y3">李</div>
         <div class="card-info"><div class="name">李娜</div><div class="dept">市场部</div></div>
         <span class="card-loc">北京</span>
@@ -1526,30 +1674,48 @@ body {
       <span class="group-count">5 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2021('魏丽惠')">
+      <a class="manager-card js-external-link" href="reports/2021/魏丽惠.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开魏丽惠的2021年度测评报告" data-fallback-label="魏丽惠的2021年度测评报告">
         <div class="avatar y2">魏</div>
         <div class="card-info"><div class="name">魏丽惠</div><div class="dept">技术中心 / 测试部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2021('姚亚坤')">
+      <a class="manager-card js-external-link" href="reports/2021/姚亚坤.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开姚亚坤的2021年度测评报告" data-fallback-label="姚亚坤的2021年度测评报告">
         <div class="avatar y2">姚</div>
         <div class="card-info"><div class="name">姚亚坤</div><div class="dept">技术中心 / 智慧财富支持</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2021('程双双')">
+      <a class="manager-card js-external-link" href="reports/2021/程双双.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开程双双的2021年度测评报告" data-fallback-label="程双双的2021年度测评报告">
         <div class="avatar y2">程</div>
         <div class="card-info"><div class="name">程双双</div><div class="dept">技术中心 / 前端研发部</div></div>
         <span class="card-loc">武汉</span>
       </a>
-      <a class="manager-card" onclick="openReport2021('李晓铮')">
+      <a class="manager-card js-external-link" href="reports/2021/李晓铮.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李晓铮的2021年度测评报告" data-fallback-label="李晓铮的2021年度测评报告">
         <div class="avatar y2">李</div>
         <div class="card-info"><div class="name">李晓铮</div><div class="dept">技术中心 / 后端研发部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2021('李瑞强')">
+      <a class="manager-card js-external-link" href="reports/2021/李瑞强.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李瑞强的2021年度测评报告" data-fallback-label="李瑞强的2021年度测评报告">
         <div class="avatar y2">李</div>
         <div class="card-info"><div class="name">李瑞强</div><div class="dept">技术中心 / 后端研发部</div></div>
         <span class="card-loc">武汉</span>
+      </a>
+    </div>
+
+    <div class="group-header">
+      <span class="group-badge resigned">已离职员工</span>
+      <span class="group-line"></span>
+      <span class="group-count">2 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card is-resigned js-external-link" href="reports/2021/孙功强.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开孙功强的2021年度测评报告" data-fallback-label="孙功强的2021年度测评报告">
+        <div class="avatar resigned">孙</div>
+        <div class="card-info"><div class="name-row"><div class="name">孙功强</div><span class="card-status">已离职</span></div><div class="dept">Risk Control Model Advisor</div></div>
+        <span class="card-loc">海外</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2021/徐志伟.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开徐志伟的2021年度测评报告" data-fallback-label="徐志伟的2021年度测评报告">
+        <div class="avatar resigned">徐</div>
+        <div class="card-info"><div class="name-row"><div class="name">徐志伟</div><span class="card-status">已离职</span></div><div class="dept">Senior Python Engineer</div></div>
+        <span class="card-loc">海外</span>
       </a>
     </div>
 
@@ -1571,8 +1737,8 @@ body {
     <h2>2020 管理者测评</h2>
     <div class="meta-pills">
       <span class="meta-pill">2020 年度测评</span>
-      <span class="meta-pill">9 位管理者</span>
-      <span class="meta-pill">国内 / 海外</span>
+      <span class="meta-pill">16 位管理者</span>
+      <span class="meta-pill">3 个分组</span>
       <span class="meta-pill">PDF 报告</span>
     </div>
   </section>
@@ -1586,22 +1752,22 @@ body {
       <span class="group-count">4 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2020('刘琳')">
+      <a class="manager-card js-external-link" href="reports/2020/刘琳.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘琳的2020年度测评报告" data-fallback-label="刘琳的2020年度测评报告">
         <div class="avatar y3">刘</div>
         <div class="card-info"><div class="name">刘琳</div><div class="dept">设计部</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2020('武利军')">
+      <a class="manager-card js-external-link" href="reports/2020/武利军.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开武利军的2020年度测评报告" data-fallback-label="武利军的2020年度测评报告">
         <div class="avatar y3">武</div>
         <div class="card-info"><div class="name">武利军</div><div class="dept">风险管理中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2020('王凯')">
+      <a class="manager-card js-external-link" href="reports/2020/王凯.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开王凯的2020年度测评报告" data-fallback-label="王凯的2020年度测评报告">
         <div class="avatar y3">王</div>
         <div class="card-info"><div class="name">王凯</div><div class="dept">技术中心</div></div>
         <span class="card-loc">北京</span>
       </a>
-      <a class="manager-card" onclick="openReport2020('白学敏')">
+      <a class="manager-card js-external-link" href="reports/2020/白学敏.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开白学敏的2020年度测评报告" data-fallback-label="白学敏的2020年度测评报告">
         <div class="avatar y3">白</div>
         <div class="card-info"><div class="name">白学敏</div><div class="dept">业务部</div></div>
         <span class="card-loc">北京</span>
@@ -1615,29 +1781,72 @@ body {
       <span class="group-count">5 人</span>
     </div>
     <div class="manager-grid">
-      <a class="manager-card" onclick="openReport2020('何明仕')">
+      <a class="manager-card js-external-link" href="reports/2020/何明仕.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开何明仕的2020年度测评报告" data-fallback-label="何明仕的2020年度测评报告">
         <div class="avatar y1">何</div>
         <div class="card-info"><div class="name">何明仕</div><div class="dept">海外业务</div></div>
         <span class="card-loc">海外</span>
       </a>
-      <a class="manager-card" onclick="openReport2020('刘傲')">
+      <a class="manager-card js-external-link" href="reports/2020/刘傲.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘傲的2020年度测评报告" data-fallback-label="刘傲的2020年度测评报告">
         <div class="avatar y1">刘</div>
         <div class="card-info"><div class="name">刘傲</div><div class="dept">海外业务</div></div>
         <span class="card-loc">海外</span>
       </a>
-      <a class="manager-card" onclick="openReport2020('刘飞')">
+      <a class="manager-card js-external-link" href="reports/2020/刘飞.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开刘飞的2020年度测评报告" data-fallback-label="刘飞的2020年度测评报告">
         <div class="avatar y1">刘</div>
         <div class="card-info"><div class="name">刘飞</div><div class="dept">海外业务</div></div>
         <span class="card-loc">海外</span>
       </a>
-      <a class="manager-card" onclick="openReport2020('周俞君')">
+      <a class="manager-card js-external-link" href="reports/2020/周俞君.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开周俞君的2020年度测评报告" data-fallback-label="周俞君的2020年度测评报告">
         <div class="avatar y1">周</div>
         <div class="card-info"><div class="name">周俞君</div><div class="dept">海外业务</div></div>
         <span class="card-loc">海外</span>
       </a>
-      <a class="manager-card" onclick="openReport2020('李进')">
+      <a class="manager-card js-external-link" href="reports/2020/李进.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开李进的2020年度测评报告" data-fallback-label="李进的2020年度测评报告">
         <div class="avatar y1">李</div>
         <div class="card-info"><div class="name">李进</div><div class="dept">海外业务</div></div>
+        <span class="card-loc">海外</span>
+      </a>
+    </div>
+
+    <div class="group-header">
+      <span class="group-badge resigned">已离职员工</span>
+      <span class="group-line"></span>
+      <span class="group-count">7 人</span>
+    </div>
+    <div class="manager-grid">
+      <a class="manager-card is-resigned js-external-link" href="reports/2020/崔代超.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开崔代超的2020年度测评报告" data-fallback-label="崔代超的2020年度测评报告">
+        <div class="avatar resigned">崔</div>
+        <div class="card-info"><div class="name-row"><div class="name">崔代超</div><span class="card-status">已离职</span></div><div class="dept">股票业务部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2020/毕宝疆.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开毕宝疆的2020年度测评报告" data-fallback-label="毕宝疆的2020年度测评报告">
+        <div class="avatar resigned">毕</div>
+        <div class="card-info"><div class="name-row"><div class="name">毕宝疆</div><span class="card-status">已离职</span></div><div class="dept">设计部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2020/黎胜甫.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开黎胜甫的2020年度测评报告" data-fallback-label="黎胜甫的2020年度测评报告">
+        <div class="avatar resigned">黎</div>
+        <div class="card-info"><div class="name-row"><div class="name">黎胜甫</div><span class="card-status">已离职</span></div><div class="dept">战略合作部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2020/郭进.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开郭进的2020年度测评报告" data-fallback-label="郭进的2020年度测评报告">
+        <div class="avatar resigned">郭</div>
+        <div class="card-info"><div class="name-row"><div class="name">郭进</div><span class="card-status">已离职</span></div><div class="dept">股票业务部</div></div>
+        <span class="card-loc">北京</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2020/朱政.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开朱政的2020年度测评报告" data-fallback-label="朱政的2020年度测评报告">
+        <div class="avatar resigned">朱</div>
+        <div class="card-info"><div class="name-row"><div class="name">朱政</div><span class="card-status">已离职</span></div><div class="dept">UUC</div></div>
+        <span class="card-loc">海外</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2020/谢爱帅.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开谢爱帅的2020年度测评报告" data-fallback-label="谢爱帅的2020年度测评报告">
+        <div class="avatar resigned">谢</div>
+        <div class="card-info"><div class="name-row"><div class="name">谢爱帅</div><span class="card-status">已离职</span></div><div class="dept">9CREDIT</div></div>
+        <span class="card-loc">海外</span>
+      </a>
+      <a class="manager-card is-resigned js-external-link" href="reports/2020/王云涛.pdf" target="_blank" rel="noopener noreferrer" aria-label="打开王云涛的2020年度测评报告" data-fallback-label="王云涛的2020年度测评报告">
+        <div class="avatar resigned">王</div>
+        <div class="card-info"><div class="name-row"><div class="name">王云涛</div><span class="card-status">已离职</span></div><div class="dept">海外业务</div></div>
         <span class="card-loc">海外</span>
       </a>
     </div>
@@ -1652,23 +1861,38 @@ body {
 </footer>
 
 <script>
-function openReport(name) {
-  window.open('reports/2025/' + name + '.html', '_blank');
+function showOpenFallback(url, label) {
+  var banner = document.getElementById('open-fallback');
+  var message = document.getElementById('open-fallback-message');
+  var link = document.getElementById('open-fallback-link');
+  if (!banner || !message || !link) return;
+  message.textContent = '浏览器拦截了新窗口，请允许弹窗，或直接打开' + (label ? '“' + label + '”' : '该报告') + '。';
+  link.href = url;
+  banner.classList.add('show');
 }
-function openReport2024(name) {
-  window.open('reports/2024/' + name + '.pdf', '_blank');
+function hideOpenFallback() {
+  var banner = document.getElementById('open-fallback');
+  if (banner) banner.classList.remove('show');
 }
-function openReport2023(name, ext) {
-  window.open('reports/2023/' + name + '.' + (ext || 'pdf'), '_blank');
+function openExternalLink(url, label) {
+  hideOpenFallback();
+  var newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+  if (newWindow) {
+    newWindow.opener = null;
+    return true;
+  }
+  showOpenFallback(url, label);
+  return false;
 }
-function openReport2022(name) {
-  window.open('reports/2022/' + name + '.pdf', '_blank');
-}
-function openReport2021(name) {
-  window.open('reports/2021/' + name + '.pdf', '_blank');
-}
-function openReport2020(name) {
-  window.open('reports/2020/' + name + '.pdf', '_blank');
+function bindExternalLinks() {
+  document.querySelectorAll('.js-external-link').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (typeof event.button === 'number' && event.button !== 0) return;
+      event.preventDefault();
+      openExternalLink(link.href, link.getAttribute('data-fallback-label') || link.getAttribute('aria-label'));
+    });
+  });
 }
 function checkGate() {
   const pw = document.getElementById('gate-pw').value;
@@ -1706,6 +1930,7 @@ function goHome() {
   if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
   window.scrollTo(0, 0);
 }
+bindExternalLinks();
 </script>
 
 </body>
